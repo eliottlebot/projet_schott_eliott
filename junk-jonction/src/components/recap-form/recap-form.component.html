@@ -1,0 +1,38 @@
+<div class="bg-white p-6 rounded-lg border border-gray-200">
+  <h2 class="text-2xl font-bold mb-6 text-center text-green-600">
+    Récapitulatif de votre inscription
+  </h2>
+
+  <div class="space-y-4 mb-6">
+    <div class="bg-gray-50 p-4 rounded-lg">
+      <div class="flex justify-between items-center py-2 border-b border-gray-200">
+        <span class="font-semibold text-gray-600">Login :</span>
+        <span class="text-gray-800 font-medium">{{ formData?.login || 'Non renseigné' }}</span>
+      </div>
+      <div class="flex justify-between items-center py-2 border-b border-gray-200">
+        <span class="font-semibold text-gray-600">Nom :</span>
+        <span class="text-gray-800 font-medium">{{ formData?.name || 'Non renseigné' }}</span>
+      </div>
+      <div class="flex justify-between items-center py-2 border-b border-gray-200">
+        <span class="font-semibold text-gray-600">Prénom :</span>
+        <span class="text-gray-800 font-medium">{{ formData?.firstname || 'Non renseigné' }}</span>
+      </div>
+      <div class="flex justify-between items-center py-2">
+        <span class="font-semibold text-gray-600">Adresse email :</span>
+        <span class="text-gray-800 font-medium">{{
+          formData?.mailAddress || 'Non renseigné'
+        }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="flex justify-center">
+    <button
+      (click)="resetForm()"
+      type="button"
+      class="bg-red-500 hover:bg-red-600 text-white font-medium py-3 px-6 rounded-lg transition-colors duration-200"
+    >
+      Reset form
+    </button>
+  </div>
+</div>

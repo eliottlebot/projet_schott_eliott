@@ -1,0 +1,60 @@
+<header
+  class="p-4 flex flex-col h-full items-center justify-between gap-4 bg-gradient-to-t from-green-600 to-green-500 text-white shadow-md"
+  role="banner"
+>
+  <a
+    class="hover:scale-110 transition-all duration-300 flex gap-2"
+    routerLink="/"
+    aria-label="Retour à l'accueil"
+  >
+    <lucide-angular [img]="LucideHouse" class="my-icon"></lucide-angular>
+    <span class="hidden sm:inline">Junk Jonction</span>
+  </a>
+
+  <div class="flex flex-col gap-4">
+    <a
+      routerLink="/pollution"
+      (click)="toggleDropdown()"
+      class="flex gap-2 hover:scale-110 transition-all duration-300"
+    >
+      <lucide-angular [img]="OctagonAlert"></lucide-angular>
+      <p class="text-center flex-1">Déclarer une pollution</p>
+    </a>
+
+    <a
+      routerLink="/pollution/list"
+      (click)="toggleDropdown()"
+      class="flex gap-2 hover:scale-110 transition-all duration-300"
+    >
+      <lucide-angular [img]="List"></lucide-angular>
+      <p class="text-center flex-1">Voir les pollutions</p>
+    </a>
+
+    <a
+      routerLink="/pollution/favorites"
+      (click)="toggleDropdown()"
+      class="flex gap-2 hover:scale-110 transition-all duration-300"
+    >
+      <lucide-angular [img]="Heart"></lucide-angular>
+      <p class="text-center flex-1">Mes favoris</p>
+    </a>
+  </div>
+
+  @if (user$ | async; as user) {
+  <button
+    (click)="logout()"
+    class="inline-flex items-center p-2 rounded-full hover:scale-110 transition-all duration-300 hover:bg-white/15 cursor-pointer"
+  >
+    <p>{{ user.login }}</p>
+    <lucide-angular class="ml-2" [img]="LogOut"></lucide-angular>
+  </button>
+  } @else {
+  <a
+    class="inline-flex items-center p-2 rounded-full hover:scale-110 transition-all duration-300 hover:bg-white/15 cursor-pointer"
+    routerLink="user/signup"
+  >
+    <p>Connexion</p>
+    <lucide-angular class="ml-2" [img]="User"></lucide-angular>
+  </a>
+  }
+</header>
