@@ -3,6 +3,8 @@ import { Observable, of } from 'rxjs';
 import { environment } from '../environments/environment';
 import { Pollution } from '../models/types/Pollution';
 import { HttpClient } from '@angular/common/http';
+import { Store } from '@ngxs/store';
+import { UnsetFavorite } from '../actions/favorites-actions';
 
 @Injectable({
   providedIn: 'root',

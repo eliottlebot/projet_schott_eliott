@@ -10,7 +10,7 @@ import { toSignal } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-pollution-favorites-list',
-  imports: [CommonModule, AsyncPipe, DatePipe, LucideAngularModule, PollutionDetailsModal],
+  imports: [CommonModule, AsyncPipe, DatePipe, LucideAngularModule],
   templateUrl: './pollution-favorites-list.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -82,7 +82,7 @@ export class PollutionFavoritesList {
     this.favoritePollutions$ = this.favoritePollutions$.pipe(
       map((pollutions) =>
         [...pollutions].sort(
-          (a, b) => new Date(b.date_observation).getTime() - new Date(a.date_observation).getTime()
+          (a, b) => new Date(b.dateObservation).getTime() - new Date(a.dateObservation).getTime()
         )
       )
     );

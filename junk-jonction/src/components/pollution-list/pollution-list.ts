@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, inject, Signal } from '@angular/core';
+import { Dialog } from '@angular/cdk/dialog';
 import { BehaviorSubject, map, Observable } from 'rxjs';
 import { PollutionService } from '../../services/pollution.service';
 import { AsyncPipe, DatePipe, CommonModule } from '@angular/common';
@@ -6,48 +7,38 @@ import { LucideAngularModule, Trash2, Info, Heart } from 'lucide-angular';
 import { Pollution } from '../../models/types/Pollution';
 import { PollutionDetailsModal } from '../pollution-details-modal/pollution-details-modal';
 import { FavoriteService } from '../../services/favorite.service';
+import { UnsetFavorite } from '../../actions/favorites-actions';
+import { Store } from '@ngxs/store';
+import { PollutionItemComponent } from '../pollution-item/pollution-item.component';
 
 @Component({
   selector: 'app-pollution-list',
-  imports: [CommonModule, AsyncPipe, DatePipe, LucideAngularModule, PollutionDetailsModal],
+  imports: [CommonModule, AsyncPipe, LucideAngularModule, PollutionItemComponent],
   templateUrl: './pollution-list.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PollutionList {
+  private readonly favoriteService = inject(FavoriteService);
+  private readonly store = inject(Store);
+  private readonly dialog = inject(Dialog);
+
   pollutionList$: Observable<Pollution[]>;
   selectedPollution$ = new BehaviorSubject<Pollution | null>(null);
   Trash = Trash2;
   Info = Info;
   Heart = Heart;
 
-  private readonly favoriteService = inject(FavoriteService);
   favoritesCount$ = this.favoriteService.favoritesCount$;
 
   constructor(private pollutionService: PollutionService) {
     this.pollutionList$ = this.pollutionService.getPollutions();
   }
 
-  deletePollution(id: number) {
-    this.pollutionService.deletePollution(id).subscribe(() => {
-      this.pollutionList$ = this.pollutionService.getPollutions();
-    });
-  }
-
-  showDetails(id: number) {
-    this.pollutionService.getPollutionDetail(id).subscribe((pollution) => {
-      this.selectedPollution$.next(pollution);
-    });
-  }
-
-  closeModal = () => {
-    this.selectedPollution$.next(null);
-  };
-
   sortByDate() {
     this.pollutionList$ = this.pollutionList$.pipe(
       map((pollutions) =>
         [...pollutions].sort(
-          (a, b) => new Date(b.date_observation).getTime() - new Date(a.date_observation).getTime()
+          (a, b) => new Date(b.dateObservation).getTime() - new Date(a.dateObservation).getTime()
         )
       )
     );
@@ -57,11 +48,16 @@ export class PollutionList {
     this.pollutionList$ = this.pollutionService.getPollutions();
   }
 
-  isFavorite(id: number): boolean {
-    return this.favoriteService.isFavorite(id);
+  deletePollution(id: number) {
+    this.pollutionService.deletePollution(id).subscribe(() => {
+      this.store.dispatch(new UnsetFavorite(id));
+      this.pollutionList$ = this.pollutionService.getPollutions();
+    });
   }
 
-  toggleFavorite(id: number): void {
-    this.favoriteService.toggleFavorite(id);
+  showDetails(pollution: Pollution) {
+    this.dialog.open(PollutionDetailsModal, {
+      data: pollution,
+    });
   }
 }

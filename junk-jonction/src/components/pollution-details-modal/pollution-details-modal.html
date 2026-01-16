@@ -1,5 +1,6 @@
-@if(pollution){
-<div class="absolute top-0 left-0 h-full w-full backdrop-blur-xs flex items-center justify-center">
+<div
+  class="absolute top-0 left-0 h-full w-full backdrop-blur-xs flex items-center justify-center z-50"
+>
   <div class="w-1/2 border-2 border-slate-200 bg-white rounded-4xl">
     <div class="p-4">
       <div class="flex w-full justify-between items-center">
@@ -7,7 +8,7 @@
         <lucide-icon
           [img]="CircleX"
           class="w-6 h-6 text-gray-600 cursor-pointer"
-          (click)="close()"
+          (click)="closeModal()"
         ></lucide-icon>
       </div>
       <div class="flex justify-between items-center">
@@ -15,9 +16,10 @@
           <p><strong>Titre :</strong> {{ pollution.titre }}</p>
           <p><strong>Description :</strong> {{ pollution.description }}</p>
           <p>
-            <strong>Date d'Observation :</strong> {{ pollution.date_observation | date : 'medium' }}
+            <strong>Date d'Observation :</strong>
+            {{ pollution.dateObservation | date : 'medium' }}
           </p>
-          <p><strong>Type de Pollution :</strong> {{ pollution.type_pollution }}</p>
+          <p><strong>Type de Pollution :</strong> {{ pollution.typePollution }}</p>
           <p><strong>Lieu :</strong> {{ pollution.lieu }}</p>
           <p><strong>Latitude :</strong> {{ pollution.latitude }}</p>
           <p><strong>Longitude :</strong> {{ pollution.longitude }}</p>
@@ -36,4 +38,3 @@
     </div>
   </div>
 </div>
-}

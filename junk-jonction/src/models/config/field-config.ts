@@ -29,7 +29,7 @@ export const POLLUTION_FIELDS: FieldConfig[] = [
     error: 'La description est requise',
   },
   {
-    name: 'date_observation',
+    name: 'dateObservation',
     label: "Date de l'observation",
     type: 'date',
     placeholder: "Entrez la date de l'observation",
@@ -38,7 +38,7 @@ export const POLLUTION_FIELDS: FieldConfig[] = [
     error: 'La date est requise',
   },
   {
-    name: 'type_pollution',
+    name: 'typePollution',
     label: 'Type de la pollution',
     type: 'select',
     required: true,

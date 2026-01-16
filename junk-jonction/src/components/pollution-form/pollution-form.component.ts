@@ -41,8 +41,8 @@ export class PollutionFormComponent implements OnInit {
     this.formGroup = new FormGroup({
       description: new FormControl('', Validators.required),
       titre: new FormControl('', Validators.required),
-      type_pollution: new FormControl(this.pollutionTypes[0], Validators.required),
-      date_observation: new FormControl(null, Validators.required),
+      typePollution: new FormControl(this.pollutionTypes[0], Validators.required),
+      dateObservation: new FormControl(null, Validators.required),
       lieu: new FormControl('', Validators.required),
       latitude: new FormControl('', [Validators.required, latLongValidator()]),
       longitude: new FormControl('', [Validators.required, latLongValidator()]),

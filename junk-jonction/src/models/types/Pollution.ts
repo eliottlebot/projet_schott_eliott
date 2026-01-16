@@ -2,8 +2,8 @@ export interface Pollution {
   id: number;
   titre: string;
   description: string;
-  date_observation: Date;
-  type_pollution: string;
+  dateObservation: Date;
+  typePollution: string;
   lieu: string;
   latitude: number;
   longitude: number;

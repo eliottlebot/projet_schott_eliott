@@ -1,0 +1,52 @@
+<div
+  class="relative rounded-xl p-5 shadow-md border border-green-300 bg-gradient-to-br from-green-50 to-green-100 hover:from-green-100 hover:to-green-200 transition"
+>
+  <button
+    class="absolute top-3 right-3 z-10 focus:outline-none"
+    (click)="toggleFavorite(pollution.id)"
+  >
+    @if(isFavorite(pollution.id)){
+    <img
+      src="favorite_selected.svg"
+      width="30px"
+      height="30px"
+      class="cursor-pointer hover:scale-110 transition-all"
+    />
+    } @else {
+    <img
+      src="favorite.svg"
+      width="30px"
+      height="30px"
+      class="cursor-pointer hover:scale-110 transition-all"
+    />
+    }
+  </button>
+  <h3 class="text-lg font-semibold text-green-800 mb-2">{{ pollution.typePollution }}</h3>
+
+  <p class="mb-1 text-green-700">
+    <strong>Localisation :</strong> {{ pollution.latitude }} : {{ pollution.longitude }}
+  </p>
+
+  <p class="mb-1 text-green-700"><strong>Description :</strong> {{ pollution.description }}</p>
+
+  <p class="mb-3 text-green-700">
+    <strong>Date :</strong> {{ pollution.dateObservation | date : 'medium' }}
+  </p>
+
+  <div class="flex justify-between">
+    <button
+      (click)="onDelete()"
+      class="flex items-center px-3 py-1 bg-red-100 rounded hover:bg-red-200 transition"
+    >
+      <lucide-icon [img]="Trash" class="w-6 h-6 text-red-600"></lucide-icon>
+    </button>
+
+    <button
+      (click)="onShowDetails()"
+      class="flex items-center gap-1 px-3 py-1 bg-green-200 rounded hover:bg-green-300 transition"
+    >
+      <lucide-icon [img]="Info" class="w-5 h-5 text-green-700"></lucide-icon>
+      <span class="text-green-800 font-medium">Détails</span>
+    </button>
+  </div>
+</div>

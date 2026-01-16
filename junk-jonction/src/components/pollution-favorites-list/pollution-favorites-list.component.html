@@ -19,13 +19,6 @@
     </button>
   </div>
 
-  @if(selectedPollution$(); as selectedPollution){
-  <app-pollution-details-modal
-    [pollution]="selectedPollution"
-    [closeModal]="closeModal"
-  ></app-pollution-details-modal>
-  }
-
   <!-- Scrollable list area -->
   @if(favoritePollutions$ | async; as favoritePollutions){ @if(favoritePollutions.length > 0){
   <div class="flex-1 overflow-auto">
@@ -46,7 +39,7 @@
           />
         </button>
 
-        <h3 class="text-lg font-semibold text-green-800 mb-2">{{ pollution.type_pollution }}</h3>
+        <h3 class="text-lg font-semibold text-green-800 mb-2">{{ pollution.typePollution }}</h3>
 
         <p class="mb-1 text-green-700">
           <strong>Localisation :</strong> {{ pollution.latitude }} : {{ pollution.longitude }}
@@ -57,7 +50,7 @@
         </p>
 
         <p class="mb-3 text-green-700">
-          <strong>Date :</strong> {{ pollution.date_observation | date : 'medium' }}
+          <strong>Date :</strong> {{ pollution.dateObservation | date : 'medium' }}
         </p>
 
         <div class="flex justify-between">

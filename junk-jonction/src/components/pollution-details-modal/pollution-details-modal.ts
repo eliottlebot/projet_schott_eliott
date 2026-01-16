@@ -1,7 +1,8 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, Input } from '@angular/core';
 import { Pollution } from '../../models/types/Pollution';
 import { DatePipe } from '@angular/common';
 import { LucideAngularModule, CircleX } from 'lucide-angular';
+import { DIALOG_DATA, DialogRef } from '@angular/cdk/dialog';
 
 @Component({
   selector: 'app-pollution-details-modal',
@@ -11,12 +12,12 @@ import { LucideAngularModule, CircleX } from 'lucide-angular';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PollutionDetailsModal {
-  @Input() pollution: Pollution | null = null;
-  @Input() closeModal!: () => void;
+  dialogRef = inject<DialogRef<Pollution>>(DialogRef);
+  pollution = inject<Pollution>(DIALOG_DATA);
+
+  closeModal() {
+    this.dialogRef?.close();
+  }
 
   CircleX = CircleX;
-
-  close() {
-    this.closeModal();
-  }
 }
