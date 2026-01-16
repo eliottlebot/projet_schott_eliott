@@ -15,8 +15,10 @@ export class PollutionService {
     return this.http.post<Pollution>(`${this.apiURL}/pollutions`, pollution);
   }
 
-  getPollutions(): Observable<Pollution[]> {
-    return this.http.get<Pollution[]>(`${this.apiURL}/pollutions`);
+  getPollutions(filter?: string): Observable<Pollution[]> {
+    return this.http.get<Pollution[]>(`${this.apiURL}/pollutions`, {
+      params: filter ? { filter } : {},
+    });
   }
 
   getPollutionDetail(id: number): Observable<Pollution | null> {
