@@ -1,24 +1,20 @@
-<div class="flex flex-col items-center justify-center gap-8 h-full w-full flex-1 backdrop-blur-xs">
+<div
+  class="flex flex-col items-center justify-center gap-6 bg-slate-50/25 p-6 rounded-xl border-slate-300 border-1 backdrop-blur-xs"
+>
   <h1 class="font-zal text-5xl text-white font-semibold text-shadow-sm text-shadow-green-500 my-4">
     Junk Jonction
   </h1>
-  <div class="flex flex-col items-center justify-center gap-6 flex-1">
-    <div
-      class="flex flex-col items-center justify-center gap-6 bg-slate-50/25 p-6 rounded-xl border-slate-300 border-1"
-    >
-      <div class="font-zal text-xl text-white font-semibold text-center">
-        <p>Ici vous pouvez déclarer les sites de pollutions à ciel ouvert que vous découvrez</p>
-        <p>Merci de collaborer pour aider la planète à aller mieux !</p>
-      </div>
-      <a
-        class="inline-flex items-center gap-2 px-3 py-2 rounded-xl font-medium bg-green-500 hover:bg-gradient-to-l hover:from-green-500 hover:to-green-600 hover:translate-x-1 text-white no-underline transition-all"
-        routerLink="pollution"
-      >
-        <span class="flex gap-2 items-center justify-center">
-          <p>Déclarer une pollution</p>
-          <lucide-angular [img]="MoveRight" class="w-5 h-5"></lucide-angular>
-        </span>
-      </a>
-    </div>
+  <div class="font-zal text-xl text-white font-semibold text-center">
+    <p>Ici vous pouvez déclarer les sites de pollutions à ciel ouvert que vous découvrez</p>
+    <p>Merci de collaborer pour aider la planète à aller mieux !</p>
   </div>
+  <a
+    class="inline-flex items-center gap-2 px-3 py-2 rounded-xl font-medium bg-green-500 hover:bg-gradient-to-l hover:from-green-500 hover:to-green-600 hover:translate-x-1 text-white no-underline transition-all"
+    routerLink="pollution"
+  >
+    <span class="flex gap-2 items-center justify-center">
+      <p>Déclarer une pollution</p>
+      <lucide-angular [img]="MoveRight" class="w-5 h-5"></lucide-angular>
+    </span>
+  </a>
 </div>
