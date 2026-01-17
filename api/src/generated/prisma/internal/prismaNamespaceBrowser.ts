@@ -95,7 +95,8 @@ export const PollutionScalarFieldEnum = {
   longitude: 'longitude',
   photoUrl: 'photoUrl',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  createdBy: 'createdBy'
 } as const
 
 export type PollutionScalarFieldEnum = (typeof PollutionScalarFieldEnum)[keyof typeof PollutionScalarFieldEnum]

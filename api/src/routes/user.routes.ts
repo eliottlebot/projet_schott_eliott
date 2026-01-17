@@ -6,9 +6,16 @@ import {
   updateUser,
   deleteUser,
   getUser,
+  getMe,
+  logout,
 } from "../controllers/user.controller.js";
 
 const router = Router();
+
+// GET /api/users/me
+router.get("/me", getMe);
+
+router.post("/logout", logout);
 
 // CREATE - POST /api/users
 router.post("/signup", createUser);

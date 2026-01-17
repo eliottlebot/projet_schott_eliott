@@ -11,9 +11,9 @@ import { latLongValidator } from '../../models/validators/latitude-longitude.val
 import { Pollution } from '../../models/types/Pollution';
 import { PollutionService } from '../../services/pollution.service';
 import { LucideAngularModule, LoaderCircle } from 'lucide-angular';
-import { first, take } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { CommonModule } from '@angular/common';
+import { UserService } from '../../services/user.service';
 
 @Component({
   selector: 'app-pollution-form',
@@ -35,7 +35,11 @@ export class PollutionFormComponent implements OnInit {
   message: string = '';
   showDiv: boolean = false;
 
-  constructor(private pollutionService: PollutionService, private destroyRef: DestroyRef) {}
+  constructor(
+    private pollutionService: PollutionService,
+    private userService: UserService,
+    private destroyRef: DestroyRef
+  ) {}
 
   ngOnInit(): void {
     this.formGroup = new FormGroup({
@@ -58,9 +62,11 @@ export class PollutionFormComponent implements OnInit {
   onSubmit() {
     this.isSubmitting = true;
     this.message = '';
+    const pollution: Pollution = this.formGroup.value as Pollution;
+    const user = this.userService.getCurrentUserFromLocalStorage();
+    pollution.createdBy = user.id;
     this.pollutionService.createPollution(this.formGroup.value as Pollution).subscribe({
       next: (response) => {
-        console.log('Pollution created successfully:', response);
         this.formGroup.reset();
         this.isSubmitting = false;
         this.message = 'Pollution déclarée avec succès !';

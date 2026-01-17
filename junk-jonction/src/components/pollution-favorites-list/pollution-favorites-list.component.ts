@@ -1,33 +1,37 @@
 import { ChangeDetectionStrategy, Component, inject, Signal } from '@angular/core';
-import { map, Observable, switchMap } from 'rxjs';
+import { BehaviorSubject, map, Observable, switchMap } from 'rxjs';
 import { PollutionService } from '../../services/pollution.service';
 import { AsyncPipe, DatePipe, CommonModule } from '@angular/common';
 import { LucideAngularModule, Trash2, Info, Heart } from 'lucide-angular';
 import { Pollution } from '../../models/types/Pollution';
 import { PollutionDetailsModal } from '../pollution-details-modal/pollution-details-modal';
 import { FavoriteService } from '../../services/favorite.service';
-import { toSignal } from '@angular/core/rxjs-interop';
+import { Store } from '@ngxs/store';
+import { Dialog } from '@angular/cdk/dialog';
+import { UnsetFavorite } from '../../actions/favorites-actions';
+import { PollutionItemComponent } from '../pollution-item/pollution-item.component';
 
 @Component({
   selector: 'app-pollution-favorites-list',
-  imports: [CommonModule, AsyncPipe, DatePipe, LucideAngularModule],
+  imports: [CommonModule, AsyncPipe, LucideAngularModule, PollutionItemComponent],
   templateUrl: './pollution-favorites-list.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PollutionFavoritesList {
-  favoritePollutions$: Observable<Pollution[]>;
-  selectedPollution$: Signal<Pollution | null>;
+  private readonly favoriteService = inject(FavoriteService);
+  private readonly store = inject(Store);
+  private readonly dialog = inject(Dialog);
+
+  pollutionList$: Observable<Pollution[]>;
+  selectedPollution$ = new BehaviorSubject<Pollution | null>(null);
   Trash = Trash2;
   Info = Info;
   Heart = Heart;
 
-  private readonly favoriteService = inject(FavoriteService);
-  private readonly pollutionService = inject(PollutionService);
-
   favoritesCount$ = this.favoriteService.favoritesCount$;
 
-  constructor() {
-    this.favoritePollutions$ = this.favoriteService
+  constructor(private pollutionService: PollutionService) {
+    this.pollutionList$ = this.favoriteService
       .getFavorites$()
       .pipe(
         switchMap((favoriteIds) =>
@@ -36,50 +40,10 @@ export class PollutionFavoritesList {
             .pipe(map((pollutions) => pollutions.filter((p) => favoriteIds.includes(p.id))))
         )
       );
-
-    this.selectedPollution$ = toSignal(
-      this.pollutionService.getPollutions().pipe(map(() => null)),
-      { initialValue: null }
-    );
   }
-
-  deletePollution(id: number) {
-    this.pollutionService.deletePollution(id).subscribe(() => {
-      // Rafraîchir la liste
-      this.favoritePollutions$ = this.favoriteService
-        .getFavorites$()
-        .pipe(
-          switchMap((favoriteIds) =>
-            this.pollutionService
-              .getPollutions()
-              .pipe(map((pollutions) => pollutions.filter((p) => favoriteIds.includes(p.id))))
-          )
-        );
-    });
-  }
-
-  showDetails(id: number) {
-    this.pollutionService.getPollutionDetail(id).subscribe((pollution) => {
-      this.selectedPollution$ = toSignal(
-        new Observable((observer) => {
-          observer.next(pollution);
-        }),
-        { initialValue: pollution }
-      );
-    });
-  }
-
-  closeModal = () => {
-    this.selectedPollution$ = toSignal(
-      new Observable((observer) => {
-        observer.next(null);
-      }),
-      { initialValue: null }
-    );
-  };
 
   sortByDate() {
-    this.favoritePollutions$ = this.favoritePollutions$.pipe(
+    this.pollutionList$ = this.pollutionList$.pipe(
       map((pollutions) =>
         [...pollutions].sort(
           (a, b) => new Date(b.dateObservation).getTime() - new Date(a.dateObservation).getTime()
@@ -89,18 +53,19 @@ export class PollutionFavoritesList {
   }
 
   resetSorting() {
-    this.favoritePollutions$ = this.favoriteService
-      .getFavorites$()
-      .pipe(
-        switchMap((favoriteIds) =>
-          this.pollutionService
-            .getPollutions()
-            .pipe(map((pollutions) => pollutions.filter((p) => favoriteIds.includes(p.id))))
-        )
-      );
+    this.pollutionList$ = this.pollutionService.getPollutions();
   }
 
-  removeFavorite(id: number): void {
-    this.favoriteService.removeFavorite(id);
+  deletePollution(id: number) {
+    this.pollutionService.deletePollution(id).subscribe(() => {
+      this.store.dispatch(new UnsetFavorite(id));
+      this.pollutionList$ = this.pollutionService.getPollutions();
+    });
+  }
+
+  showDetails(pollution: Pollution) {
+    this.dialog.open(PollutionDetailsModal, {
+      data: pollution,
+    });
   }
 }

@@ -17,7 +17,7 @@ export interface AuthRequest extends Request {
 export const requireAuth = (
   req: AuthRequest,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   const authHeader = req.headers.authorization;
   if (!authHeader || !authHeader.startsWith("Bearer ")) {
@@ -31,7 +31,6 @@ export const requireAuth = (
     return res.status(401).json({ message: "Token invalide" });
   }
   try {
-    console.log(token);
     const payload = verifyJwt<User>(token);
     req.user = payload;
     next();

@@ -1,4 +1,5 @@
-import express, { Application } from "express";
+import express, { Application, NextFunction, Request, Response } from "express";
+import cookieParser from "cookie-parser";
 import cors from "cors";
 import dotenv from "dotenv";
 import routes from "./routes/index.js";
@@ -10,18 +11,24 @@ dotenv.config();
 const app: Application = express();
 const PORT = process.env.PORT || 3001;
 
-// Configuration CORS
-const corsOptions = {
-  origin: "*",
-  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-  headers: "Content-Type, Authorization",
-  exposedHeaders: "Authorization",
-};
+const allowedOrigins = ["http://localhost:4200", "*"];
 
-app.use(cors(corsOptions));
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+    credentials: true,
+  }),
+);
 
 // Middleware pour parser le JSON
 app.use(express.json());
+app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
 
 // Route de bienvenue

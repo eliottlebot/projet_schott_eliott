@@ -2,7 +2,52 @@ import { Request, Response } from "express";
 import { prisma } from "../lib/prisma.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { ApiError } from "../middleware/errorHandler.js";
-import { generateJwt } from "../utils/jwt-utils.js";
+import { generateJwt, normalizeToken, verifyJwt } from "../utils/jwt-utils.js";
+
+const USER_COOKIE_TOKEN_NAME = "auth_token";
+
+export const logout = asyncHandler(async (req: Request, res: Response) => {
+  const token = req.cookies[USER_COOKIE_TOKEN_NAME];
+
+  if (!token) {
+    return res.status(200).json({
+      success: true,
+      message: "Déconnecté avec succès",
+    });
+  }
+
+  res.clearCookie(USER_COOKIE_TOKEN_NAME, {
+    httpOnly: true,
+    sameSite: "lax",
+    secure: false,
+    path: "/",
+  });
+
+  res.status(200).json({
+    success: true,
+    message: "Déconnecté avec succès",
+  });
+});
+
+export const getMe = asyncHandler(async (req: Request, res: Response) => {
+  const token = req.cookies[USER_COOKIE_TOKEN_NAME];
+
+  if (!token) throw new ApiError(401, "Non authentifié");
+
+  try {
+    const payload = verifyJwt(token);
+    const user = await prisma.user.findUnique({
+      where: { id: payload.userId },
+      select: { id: true, nom: true, prenom: true, login: true },
+    });
+
+    if (!user) throw new ApiError(404, "Utilisateur introuvable");
+
+    res.status(200).json({ success: true, data: { user } });
+  } catch {
+    throw new ApiError(401, "Token invalide ou expiré");
+  }
+});
 
 export const createUser = asyncHandler(async (req: Request, res: Response) => {
   const { nom, prenom, login, pass } = req.body;
@@ -34,6 +79,14 @@ export const createUser = asyncHandler(async (req: Request, res: Response) => {
 
   const token = generateJwt(user.id);
 
+  res.cookie(USER_COOKIE_TOKEN_NAME, token, {
+    httpOnly: true,
+    maxAge: 1000000,
+    sameSite: "lax",
+    secure: false,
+    path: "/",
+  });
+
   res.status(201).json({
     success: true,
     data: {
@@ -51,15 +104,14 @@ export const getUser = asyncHandler(async (req: Request, res: Response) => {
   }
 
   const user = await prisma.user.findUnique({
-    where: {
-      login,
-    },
+    where: { login },
   });
 
   if (!user) {
     throw new ApiError(401, "Identifiants invalides");
   }
 
+  // ⚠️ Idéal : hasher les mots de passe avec bcrypt
   if (user.pass !== pass) {
     throw new ApiError(401, "Mauvais mot de passe");
   }
@@ -67,6 +119,14 @@ export const getUser = asyncHandler(async (req: Request, res: Response) => {
   const { pass: _, ...userWithoutPassword } = user;
 
   const token = generateJwt(user.id);
+
+  res.cookie(USER_COOKIE_TOKEN_NAME, token, {
+    httpOnly: true,
+    maxAge: 1000000,
+    sameSite: "lax",
+    secure: false,
+    path: "/",
+  });
 
   res.status(200).json({
     success: true,
@@ -77,7 +137,6 @@ export const getUser = asyncHandler(async (req: Request, res: Response) => {
   });
 });
 
-// READ - Récupérer tous les utilisateurs
 export const getAllUsers = asyncHandler(async (req: Request, res: Response) => {
   const users = await prisma.user.findMany({
     orderBy: {
@@ -85,7 +144,6 @@ export const getAllUsers = asyncHandler(async (req: Request, res: Response) => {
     },
   });
 
-  // Retirer les mots de passe
   const usersWithoutPasswords = users.map(({ pass, ...user }) => user);
 
   res.status(200).json(usersWithoutPasswords);
@@ -102,7 +160,7 @@ export const getUserById = asyncHandler(async (req: Request, res: Response) => {
   });
 
   if (!user) {
-    throw new ApiError(404, "Utilisateur non trouvé");
+    throw new ApiError(404, "Utilisateur non trouvé dans getUserById");
   }
 
   // Ne pas retourner le mot de passe

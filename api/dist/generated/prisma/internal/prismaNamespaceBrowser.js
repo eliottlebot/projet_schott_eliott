@@ -71,7 +71,8 @@ export const PollutionScalarFieldEnum = {
     longitude: 'longitude',
     photoUrl: 'photoUrl',
     createdAt: 'createdAt',
-    updatedAt: 'updatedAt'
+    updatedAt: 'updatedAt',
+    createdBy: 'createdBy'
 };
 export const SortOrder = {
     asc: 'asc',

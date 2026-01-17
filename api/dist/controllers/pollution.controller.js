@@ -3,7 +3,7 @@ import { ApiError } from "../middleware/errorHandler.js";
 import { prisma } from "../lib/prisma.js";
 // CREATE - Créer une nouvelle pollution
 export const createPollution = asyncHandler(async (req, res) => {
-    const { titre, lieu, dateObservation, typePollution, description, latitude, longitude, photoUrl, } = req.body;
+    const { titre, lieu, dateObservation, typePollution, description, latitude, longitude, photoUrl, createdBy, } = req.body;
     if (!titre) {
         throw new ApiError(400, "Le titre est requis");
     }
@@ -17,6 +17,7 @@ export const createPollution = asyncHandler(async (req, res) => {
             latitude: latitude ? parseFloat(latitude) : null,
             longitude: longitude ? parseFloat(longitude) : null,
             photoUrl,
+            createdBy,
         },
     });
     res.status(201).json({
@@ -27,6 +28,11 @@ export const createPollution = asyncHandler(async (req, res) => {
 // READ - Récupérer toutes les pollutions
 export const getAllPollutions = asyncHandler(async (req, res) => {
     const pollutions = await prisma.pollution.findMany({
+        include: {
+            user: {
+                select: { nom: true, prenom: true },
+            },
+        },
         orderBy: {
             createdAt: "desc",
         },

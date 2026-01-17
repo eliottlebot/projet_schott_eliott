@@ -76,7 +76,6 @@ export class SignupFormComponent implements OnInit {
 
   // SIGNIN
   onSignin(): void {
-    console.log(this.signinFormGroup.value);
     const { login, pass } = this.signinFormGroup.value;
     if (!login || !pass) {
       alert('Veuillez remplir tous les champs de connexion.');

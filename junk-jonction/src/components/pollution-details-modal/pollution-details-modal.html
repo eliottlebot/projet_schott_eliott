@@ -1,40 +1,51 @@
-<div
-  class="absolute top-0 left-0 h-full w-full backdrop-blur-xs flex items-center justify-center z-50"
->
-  <div class="w-1/2 border-2 border-slate-200 bg-white rounded-4xl">
-    <div class="p-4">
-      <div class="flex w-full justify-between items-center">
-        <h2 class="text-2xl font-bold">Détails de la Pollution</h2>
-        <lucide-icon
-          [img]="CircleX"
-          class="w-6 h-6 text-gray-600 cursor-pointer"
-          (click)="closeModal()"
-        ></lucide-icon>
-      </div>
-      <div class="flex justify-between items-center">
-        <div>
-          <p><strong>Titre :</strong> {{ pollution.titre }}</p>
-          <p><strong>Description :</strong> {{ pollution.description }}</p>
-          <p>
-            <strong>Date d'Observation :</strong>
-            {{ pollution.dateObservation | date : 'medium' }}
-          </p>
-          <p><strong>Type de Pollution :</strong> {{ pollution.typePollution }}</p>
-          <p><strong>Lieu :</strong> {{ pollution.lieu }}</p>
-          <p><strong>Latitude :</strong> {{ pollution.latitude }}</p>
-          <p><strong>Longitude :</strong> {{ pollution.longitude }}</p>
-        </div>
-        <div class="max-w-1/2">
-          @if(pollution.photo_url){
-          <p><strong>Photo :</strong></p>
-          <img
-            [src]="pollution.photo_url"
-            alt="Photo de la pollution"
-            class="h-auto rounded-lg border border-slate-300 mt-2"
-          />
-          }
-        </div>
-      </div>
+<div class="w-full border-2 border-slate-200 bg-white rounded-xl flex flex-col overflow-hidden">
+  <div class="flex w-full justify-between items-center p-4 bg-green-600 text-white">
+    <div>
+      <h2 class="text-2xl font-bold">{{ pollution.titre }}</h2>
+      @if(pollution.user){
+      <p class="text-slate-200">Créée par {{ pollution.user.nom }}</p>
+      } @else {
+      <p class="text-slate-200">Créée par Anonyme</p>
+      }
+    </div>
+
+    <lucide-icon
+      [img]="CircleX"
+      class="w-6 h-6 text-white cursor-pointer hover:scale-105 transition"
+      (click)="closeModal()"
+    ></lucide-icon>
+  </div>
+  <div class="flex justify-between items-start p-6 gap-x-4 h-96">
+    <div class="mr-8">
+      <p class="flex flex-col text-gray-700">
+        <strong>Observée le :</strong>
+        {{ pollution.dateObservation | date : 'medium' }}
+      </p>
+      <p class="flex flex-col text-gray-700">
+        <strong>Type de Pollution :</strong> {{ pollution.typePollution }}
+      </p>
+      <p class="flex flex-col text-gray-700"><strong>Lieu :</strong> {{ pollution.lieu }}</p>
+      <p class="flex flex-col text-gray-700">
+        <strong>Latitude :</strong> {{ pollution.latitude }}
+      </p>
+      <p class="flex flex-col text-gray-700">
+        <strong>Longitude :</strong> {{ pollution.longitude }}
+      </p>
+    </div>
+    <div
+      class="flex flex-col items-center justify-center gap-4 text-center bg-slate-50 p-6 rounded-lg h-full"
+    >
+      @if(pollution.photo_url){
+      <p><strong>Photo :</strong></p>
+      <img
+        [src]="pollution.photo_url"
+        alt="Photo de la pollution"
+        class="h-auto rounded-lg border border-slate-300 mt-2"
+      />
+      } @else {
+      <lucide-icon [img]="CameraOff" class="w-12 h-12 text-slate-600"></lucide-icon>
+      <p>Aucune photo fournie !</p>
+      }
     </div>
   </div>
 </div>

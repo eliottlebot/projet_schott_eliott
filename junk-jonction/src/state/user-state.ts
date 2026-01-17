@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { UserStateModel } from '../models/state/user-state-model';
 import { SetUser, UnsetUser } from '../actions/user-actions';
 
-const USER_KEY = 'user';
+export const USER_KEY = 'user';
 
 function getStoredUser(): UserStateModel['user'] {
   const raw = localStorage.getItem(USER_KEY);

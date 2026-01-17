@@ -1,8 +1,7 @@
 interface UserData {
-  id: number;
+  id: string;
   login: string;
   pass: string;
   nom: string;
   prenom: string;
-  token?: string;
 }

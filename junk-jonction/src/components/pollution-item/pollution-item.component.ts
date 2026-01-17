@@ -7,6 +7,7 @@ import { PollutionService } from '../../services/pollution.service';
 import { Store } from '@ngxs/store';
 import { UnsetFavorite } from '../../actions/favorites-actions';
 import { DialogRef } from '@angular/cdk/dialog';
+import { UserService } from '../../services/user.service';
 
 @Component({
   selector: 'app-pollution-item',
@@ -22,7 +23,7 @@ export class PollutionItemComponent {
   Trash = Trash;
   Info = Info;
 
-  constructor(private favoriteService: FavoriteService) {}
+  constructor(private favoriteService: FavoriteService, private userService: UserService) {}
 
   isFavorite(id: number): boolean {
     return this.favoriteService.isFavorite(id);

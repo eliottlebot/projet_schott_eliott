@@ -8,14 +8,15 @@ import {
   LucideHouse,
   User,
   ChevronUp,
-  OctagonAlert,
-  Heart,
+  NotebookPen,
+  TriangleAlert,
   LogOut,
 } from 'lucide-angular';
 import { UnsetToken } from '../../actions/token-actions';
 import { TokenState } from '../../state/token-state';
 import { UserState } from '../../state/user-state';
 import { UnsetUser } from '../../actions/user-actions';
+import { UserService } from '../../services/user.service';
 
 @Component({
   selector: 'app-header',
@@ -29,12 +30,12 @@ export class HeaderComponent {
   readonly User = User;
   readonly List = List;
   readonly ChevronUp = ChevronUp;
-  readonly OctagonAlert = OctagonAlert;
-  readonly Heart = Heart;
+  readonly NotebookPen = NotebookPen;
+  readonly TriangleAlert = TriangleAlert;
   readonly LogOut = LogOut;
 
   private readonly store = inject(Store);
-  private readonly router = inject(Router);
+  private readonly userService = inject(UserService);
   readonly token$ = this.store.select(TokenState.token);
   readonly user$ = this.store.select(UserState.user);
 
@@ -45,8 +46,6 @@ export class HeaderComponent {
   }
 
   logout() {
-    this.store.dispatch(new UnsetToken());
-    this.store.dispatch(new UnsetUser());
-    this.router.navigate(['/']);
+    this.userService.logout().subscribe();
   }
 }

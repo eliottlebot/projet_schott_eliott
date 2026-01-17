@@ -7,16 +7,28 @@ import {
   HttpErrorResponse,
 } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { catchError, switchMap, take } from 'rxjs/operators';
 import { Router } from '@angular/router';
+import { Store } from '@ngxs/store';
+import { TokenState } from '../state/token-state';
+import { UnsetToken } from '../actions/token-actions';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
-  constructor(private router: Router) {}
+  constructor(private router: Router, private store: Store) {}
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    const token = localStorage.getItem('token');
+    return this.store.select(TokenState.token).pipe(
+      take(1),
+      switchMap((token) => this.handleRequest(req, next, token))
+    );
+  }
 
+  handleRequest(
+    req: HttpRequest<any>,
+    next: HttpHandler,
+    token: string | null
+  ): Observable<HttpEvent<any>> {
     const authReq = token
       ? req.clone({
           setHeaders: {
@@ -28,7 +40,7 @@ export class AuthInterceptor implements HttpInterceptor {
     return next.handle(authReq).pipe(
       catchError((error: HttpErrorResponse) => {
         if (error.status === 401 || error.status === 403) {
-          localStorage.removeItem('token');
+          this.store.dispatch(new UnsetToken());
           this.router.navigate(['/']);
         }
 

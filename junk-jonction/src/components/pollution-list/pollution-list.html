@@ -1,23 +1,30 @@
 <div class="bg-[url(/jj-bg.webp)] h-full flex-1 bg-cover bg-center flex flex-col">
-  <div class="flex justify-end gap-4 p-5 bg-white/20 shadow-b-lg items-center backdrop-blur-xs">
-    <p class="rounded-full bg-slate-50 hover:bg-slate-100 border border-slate-200 px-4 py-2">
-      @if(favoritesCount$ | async; as favoritesCount){
+  <div class="flex justify-between p-5 bg-white/20 shadow-b-lg items-center backdrop-blur-xs">
+    <h1
+      class="font-zal text-5xl text-white font-semibold text-shadow-sm text-shadow-green-500 my-4"
+    >
+      Liste des pollutions
+    </h1>
+    <div class="flex justify-end gap-4 items-center">
+      <p class="rounded-full bg-slate-50 hover:bg-slate-100 border border-slate-200 px-4 py-2">
+        @if(favoritesCount$ | async; as favoritesCount){
 
-      {{ favoritesCount }} pollutions marquées en favori. } @else {Aucune pollutions marquées en
-      favori. }
-    </p>
-    <button
-      class="rounded-full bg-slate-50 hover:bg-slate-100 border border-slate-200 px-4 py-2"
-      (click)="sortByDate()"
-    >
-      Trier par date décroissante
-    </button>
-    <button
-      class="rounded-full bg-slate-50 hover:bg-slate-100 border border-slate-200 px-4 py-2"
-      (click)="resetSorting()"
-    >
-      Réinitialiser le tri
-    </button>
+        {{ favoritesCount }} pollutions marquées en favori. } @else {Aucune pollutions marquées en
+        favori. }
+      </p>
+      <button
+        class="rounded-full bg-slate-50 hover:bg-slate-100 border border-slate-200 px-4 py-2"
+        (click)="sortByDate()"
+      >
+        Trier par date décroissante
+      </button>
+      <button
+        class="rounded-full bg-slate-50 hover:bg-slate-100 border border-slate-200 px-4 py-2"
+        (click)="resetSorting()"
+      >
+        Réinitialiser le tri
+      </button>
+    </div>
   </div>
   @if(pollutionList$ | async; as pollutionList){
   <div class="flex-1 overflow-auto backdrop-blur-xs">

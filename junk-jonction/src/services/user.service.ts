@@ -4,33 +4,81 @@ import { environment } from '../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { ApiAuthResponse, AuthPayload } from '../models/types/ApiAuthResponse';
 import { Store } from '@ngxs/store';
-import { SetUser } from '../actions/user-actions';
+import { SetUser, UnsetUser } from '../actions/user-actions';
 import { Router } from '@angular/router';
+import { AuthenticatedUser } from '../models/types/AuthenticatedUser';
+import { USER_KEY } from '../state/user-state';
+import { UnsetToken } from '../actions/token-actions';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UserService {
   private apiURL: string = environment.apiURL;
-  constructor(private http: HttpClient, private store: Store, private router: Router) {}
+  constructor(
+    private http: HttpClient,
+    private store: Store,
+    private router: Router,
+  ) {}
 
   signup(userSignupData: UserSignupData): Observable<AuthPayload> {
-    return this.http.post<ApiAuthResponse>(`${this.apiURL}/users/signup`, userSignupData).pipe(
-      map((response) => {
-        this.store.dispatch(new SetUser(response.data.user));
-        this.router.navigate(['/']);
-        return response.data;
+    return this.http
+      .post<ApiAuthResponse>(`${this.apiURL}/users/signup`, userSignupData, {
+        withCredentials: true,
       })
-    );
+      .pipe(
+        map((response) => {
+          this.store.dispatch(new SetUser(response.data.user));
+          this.router.navigate(['/']);
+          return response.data;
+        }),
+      );
   }
 
   signin(userSigninData: UserSigninData): Observable<AuthPayload> {
-    return this.http.post<ApiAuthResponse>(`${this.apiURL}/users/signin`, userSigninData).pipe(
-      map((response) => {
-        this.store.dispatch(new SetUser(response.data.user));
-        this.router.navigate(['/']);
-        return response.data;
+    return this.http
+      .post<ApiAuthResponse>(`${this.apiURL}/users/signin`, userSigninData, {
+        withCredentials: true,
       })
+      .pipe(
+        map((response) => {
+          this.store.dispatch(new SetUser(response.data.user));
+          this.router.navigate(['/']);
+
+          return response.data;
+        }),
+      );
+  }
+
+  logout(): Observable<void> {
+    return this.http.post<void>(`${this.apiURL}/users/logout`, {}, { withCredentials: true }).pipe(
+      map(() => {
+        this.store.dispatch(new UnsetToken());
+        this.store.dispatch(new UnsetUser());
+
+        this.router.navigate(['/']);
+      }),
     );
+  }
+
+  getCurrentUserFromLocalStorage(): AuthenticatedUser {
+    const userJson = localStorage.getItem(USER_KEY);
+    if (userJson) {
+      return JSON.parse(userJson) as AuthenticatedUser;
+    }
+    throw new Error('No current user found in local storage');
+  }
+
+  getCurrentUser(): Observable<AuthenticatedUser> {
+    return this.http
+      .get<ApiAuthResponse>(`${this.apiURL}/users/me`, {
+        withCredentials: true,
+      })
+      .pipe(
+        map((response) => {
+          this.store.dispatch(new SetUser(response.data.user));
+          return response.data.user;
+        }),
+      );
   }
 }

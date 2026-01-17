@@ -1,6 +1,8 @@
 import { Router } from "express";
-import { createUser, getAllUsers, getUserById, updateUser, deleteUser, getUser, } from "../controllers/user.controller.js";
+import { createUser, getAllUsers, getUserById, updateUser, deleteUser, getUser, getMe, } from "../controllers/user.controller.js";
 const router = Router();
+// GET /api/users/me
+router.get("/me", getMe);
 // CREATE - POST /api/users
 router.post("/signup", createUser);
 router.post("/signin", getUser);

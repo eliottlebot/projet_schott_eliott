@@ -13,12 +13,13 @@ export const requireAuth = (req, res, next) => {
             .json({ message: "Missing or invalid authorization header" });
         return;
     }
+    console.log(JSON.stringify(authHeader));
     const token = authHeader.split(" ")[1];
     if (!token) {
         return res.status(401).json({ message: "Token invalide" });
     }
     try {
-        console.log(token);
+        console.log(JSON.stringify(token));
         const payload = verifyJwt(token);
         req.user = payload;
         next();

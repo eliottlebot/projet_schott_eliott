@@ -15,6 +15,7 @@ export const createPollution = asyncHandler(
       latitude,
       longitude,
       photoUrl,
+      createdBy,
     } = req.body;
 
     if (!titre) {
@@ -31,6 +32,7 @@ export const createPollution = asyncHandler(
         latitude: latitude ? parseFloat(latitude) : null,
         longitude: longitude ? parseFloat(longitude) : null,
         photoUrl,
+        createdBy,
       },
     });
 
@@ -45,6 +47,11 @@ export const createPollution = asyncHandler(
 export const getAllPollutions = asyncHandler(
   async (req: Request, res: Response) => {
     const pollutions = await prisma.pollution.findMany({
+      include: {
+        user: {
+          select: { nom: true, prenom: true },
+        },
+      },
       orderBy: {
         createdAt: "desc",
       },
