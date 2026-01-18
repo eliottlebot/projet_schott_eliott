@@ -8,13 +8,33 @@
     <p>Ici vous pouvez déclarer les sites de pollutions à ciel ouvert que vous découvrez</p>
     <p>Merci de collaborer pour aider la planète à aller mieux !</p>
   </div>
-  <a
-    class="inline-flex items-center gap-2 px-3 py-2 rounded-xl font-medium bg-green-500 hover:bg-gradient-to-l hover:from-green-500 hover:to-green-600 hover:translate-x-1 text-white no-underline transition-all"
-    routerLink="pollution"
-  >
-    <span class="flex gap-2 items-center justify-center">
-      <p>Déclarer une pollution</p>
-      <lucide-angular [img]="MoveRight" class="w-5 h-5"></lucide-angular>
-    </span>
-  </a>
+  <div class="flex gap-4 items-center">
+    <a
+      class="inline-flex items-center gap-2 px-3 py-2 rounded-xl font-medium bg-green-500 hover:bg-gradient-to-l hover:from-green-500 hover:to-green-600 hover:translate-x-1 text-white no-underline transition-all"
+      routerLink="pollution"
+    >
+      <span class="flex gap-2 items-center justify-center">
+        <p>Déclarer une pollution</p>
+        <lucide-angular [img]="MoveRight" class="w-5 h-5"></lucide-angular>
+      </span>
+    </a>
+    <a
+      class="inline-flex items-center gap-2 px-3 py-2 rounded-xl font-medium bg-green-500 hover:bg-gradient-to-l hover:from-green-500 hover:to-green-600 hover:translate-x-1 text-white no-underline transition-all"
+      routerLink="pollution/list"
+    >
+      <span class="flex gap-2 items-center justify-center">
+        <p>Voir les pollutions</p>
+        <lucide-angular [img]="MoveRight" class="w-5 h-5"></lucide-angular>
+      </span>
+    </a>
+    <a
+      class="inline-flex items-center gap-2 px-3 py-2 rounded-xl font-medium bg-green-500 hover:bg-gradient-to-l hover:from-green-500 hover:to-green-600 hover:translate-x-1 text-white no-underline transition-all"
+      routerLink="pollution/favorites"
+    >
+      <span class="flex gap-2 items-center justify-center">
+        <p>Pollutions suivies</p>
+        <lucide-angular [img]="MoveRight" class="w-5 h-5"></lucide-angular>
+      </span>
+    </a>
+  </div>
 </div>

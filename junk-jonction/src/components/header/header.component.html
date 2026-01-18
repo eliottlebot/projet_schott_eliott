@@ -41,20 +41,20 @@
   </div>
 
   @if (user$ | async; as user) {
-  <button
-    (click)="logout()"
-    class="inline-flex items-center p-2 rounded-full hover:scale-110 transition-all duration-300 hover:bg-white/15 cursor-pointer"
-  >
-    <p>{{ user.login }}</p>
-    <lucide-angular class="ml-2" [img]="LogOut"></lucide-angular>
-  </button>
+    <button
+      (click)="logout()"
+      class="inline-flex items-center p-2 rounded-full hover:scale-110 transition-all duration-300 hover:bg-white/15 cursor-pointer"
+    >
+      <p>{{ user.login }}</p>
+      <lucide-angular class="ml-2" [img]="LogOut"></lucide-angular>
+    </button>
   } @else {
-  <a
-    class="inline-flex items-center p-2 rounded-full hover:scale-110 transition-all duration-300 hover:bg-white/15 cursor-pointer"
-    routerLink="user/signup"
-  >
-    <p>Connexion</p>
-    <lucide-angular class="ml-2" [img]="User"></lucide-angular>
-  </a>
+    <a
+      class="inline-flex items-center p-2 rounded-full hover:scale-110 transition-all duration-300 hover:bg-white/15 cursor-pointer"
+      routerLink="user/signin"
+    >
+      <p>Connexion</p>
+      <lucide-angular class="ml-2" [img]="User"></lucide-angular>
+    </a>
   }
 </header>

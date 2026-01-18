@@ -1,84 +1,54 @@
 <div class="min-h-screen flex items-center justify-center p-4 sm:p-8">
   <div class="w-full max-w-4xl bg-white rounded-xl shadow-lg p-6 sm:p-10">
     <h1 class="text-center text-2xl font-semibold mb-8">{{ formTitle }}</h1>
+    <form [formGroup]="signupFormGroup" class="bg-slate-50 p-6 rounded-lg flex flex-col gap-4">
+      <h2 class="text-lg font-medium mb-2">Inscription</h2>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
-      <!-- SIGN UP -->
-      <form [formGroup]="signupFormGroup" class="bg-slate-50 p-6 rounded-lg flex flex-col gap-4">
-        <h2 class="text-lg font-medium mb-2">Inscription</h2>
+      <label for="login">Login</label>
+      <input
+        id="login"
+        formControlName="login"
+        type="text"
+        class="bg-white p-2 rounded-lg border"
+      />
 
-        <label for="login">Login</label>
-        <input
-          id="login"
-          formControlName="login"
-          type="text"
-          class="bg-white p-2 rounded-lg border"
-        />
+      <label for="password">Mot de passe</label>
+      <input
+        id="password"
+        formControlName="pass"
+        type="password"
+        class="bg-white p-2 rounded-lg border"
+      />
 
-        <label for="password">Mot de passe</label>
-        <input
-          id="password"
-          formControlName="pass"
-          type="password"
-          class="bg-white p-2 rounded-lg border"
-        />
+      <label for="confirmPassword">Confirmer le mot de passe</label>
+      <input
+        id="confirmPassword"
+        formControlName="confirmPassword"
+        type="password"
+        class="bg-white p-2 rounded-lg border"
+      />
 
-        <label for="confirmPassword">Confirmer le mot de passe</label>
-        <input
-          id="confirmPassword"
-          formControlName="confirmPassword"
-          type="password"
-          class="bg-white p-2 rounded-lg border"
-        />
+      <label for="name">Nom</label>
+      <input id="name" formControlName="nom" type="text" class="bg-white p-2 rounded-lg border" />
 
-        <label for="name">Nom</label>
-        <input id="name" formControlName="nom" type="text" class="bg-white p-2 rounded-lg border" />
+      <label for="firstname">Prénom</label>
+      <input
+        id="firstname"
+        formControlName="prenom"
+        type="text"
+        class="bg-white p-2 rounded-lg border"
+      />
 
-        <label for="firstname">Prénom</label>
-        <input
-          id="firstname"
-          formControlName="prenom"
-          type="text"
-          class="bg-white p-2 rounded-lg border"
-        />
-
-        <button
-          type="button"
-          (click)="onSubmit()"
-          class="mt-4 bg-green-600 text-white py-2 rounded-lg hover:bg-green-700 transition"
-        >
-          Créer un compte
-        </button>
-      </form>
-
-      <!-- SIGN IN -->
-      <form [formGroup]="signinFormGroup" class="bg-slate-50 p-6 rounded-lg flex flex-col gap-4">
-        <h2 class="text-lg font-medium mb-2">Connexion</h2>
-
-        <label for="signinLogin">Login</label>
-        <input
-          id="login"
-          formControlName="login"
-          type="text"
-          class="bg-white p-2 rounded-lg border"
-        />
-
-        <label for="signinPassword">Mot de passe</label>
-        <input
-          id="pass"
-          formControlName="pass"
-          type="password"
-          class="bg-white p-2 rounded-lg border"
-        />
-
-        <button
-          type="button"
-          class="mt-4 bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition"
-          (click)="onSignin()"
-        >
-          Se connecter
-        </button>
-      </form>
-    </div>
+      <button
+        type="button"
+        (click)="onSubmit()"
+        class="mt-4 bg-green-600 text-white py-2 rounded-lg hover:bg-green-700 transition"
+      >
+        Créer un compte
+      </button>
+    </form>
+    <a class="text-blue-600 hover:underline mt-4 block text-center" routerLink="/user/signin">
+      Déjà un compte ? Connectez-vous ici.
+    </a>
   </div>
 </div>

@@ -1,7 +1,7 @@
 export interface FieldConfig {
   name: string;
   label: string;
-  type: 'text' | 'date' | 'select' | 'number';
+  type: 'text' | 'date' | 'select' | 'number' | 'file';
   placeholder?: string;
   required?: boolean;
   options?: string[];
@@ -74,9 +74,9 @@ export const POLLUTION_FIELDS: FieldConfig[] = [
     error: 'Entrez une longitude valide (exemple : 2.3522)',
   },
   {
-    name: 'photo_url',
+    name: 'photo',
     label: 'Photo de la pollution',
-    type: 'text',
+    type: 'file',
     placeholder: "Entrez l'url de la photo",
     required: false,
     default: '',

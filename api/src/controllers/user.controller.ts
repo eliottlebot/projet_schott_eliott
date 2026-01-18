@@ -43,7 +43,7 @@ export const getMe = asyncHandler(async (req: Request, res: Response) => {
 
     if (!user) throw new ApiError(404, "Utilisateur introuvable");
 
-    res.status(200).json({ success: true, data: { user } });
+    res.status(200).json({ success: true, data: { user, token } });
   } catch {
     throw new ApiError(401, "Token invalide ou expiré");
   }

@@ -7,69 +7,81 @@
   <form [formGroup]="formGroup" class="flex items-center justify-center gap-8 w-full p-6">
     <div class="gap-2 justify-around grid grid-cols-1 md:grid-cols-2 flex-1">
       <div class="flex flex-col gap-6">
-        @for(pollutionField of pollutionFields; track $index){ @if($index < pollutionFields.length /
-        2){
-        <div class="flex flex-col gap-2">
-          @switch(pollutionField.type){ @case('select'){
-          <label class="text-gray-700 font-medium">{{ pollutionField.label }}:</label>
-          <select
-            [formControlName]="pollutionField.name"
-            class="bg-slate-50 p-3 rounded-lg border border-slate-300 placeholder:text-slate-400"
-          >
-            @for(type of pollutionTypes; track $index){
-            <option [value]="type">{{ type }}</option>
-            }
-          </select>
-          } @default{
-          <label class="text-gray-700 font-medium">{{ pollutionField.label }}:</label>
-          <input
-            [formControlName]="pollutionField.name"
-            [type]="pollutionField.type"
-            class="bg-slate-50 p-3 rounded-lg border border-slate-300 placeholder:text-slate-400"
-            [placeholder]="pollutionField.placeholder"
-          />
-          <span class="text-red-500 text-sm h-3">
-            @if(formGroup.get(pollutionField.name)?.invalid &&
-            formGroup.get(pollutionField.name)?.touched){
-            {{ pollutionField.error }}
-            }</span
-          >
-          } }
-        </div>
-        } }
+        @for (pollutionField of pollutionFields; track $index) {
+          @if ($index < pollutionFields.length / 2) {
+            <div class="flex flex-col gap-2">
+              @switch (pollutionField.type) {
+                @case ('select') {
+                  <label class="text-gray-700 font-medium">{{ pollutionField.label }}:</label>
+                  <select
+                    [formControlName]="pollutionField.name"
+                    class="bg-slate-50 p-3 rounded-lg border border-slate-300 placeholder:text-slate-400"
+                  >
+                    @for (type of pollutionTypes; track $index) {
+                      <option [value]="type">{{ type }}</option>
+                    }
+                  </select>
+                }
+                @default {
+                  <label class="text-gray-700 font-medium">{{ pollutionField.label }}:</label>
+                  <input
+                    [formControlName]="pollutionField.name"
+                    [type]="pollutionField.type"
+                    class="bg-slate-50 p-3 rounded-lg border border-slate-300 placeholder:text-slate-400"
+                    [placeholder]="pollutionField.placeholder"
+                  />
+                  <span class="text-red-500 text-sm h-3">
+                    @if (
+                      formGroup.get(pollutionField.name)?.invalid &&
+                      formGroup.get(pollutionField.name)?.touched
+                    ) {
+                      {{ pollutionField.error }}
+                    }
+                  </span>
+                }
+              }
+            </div>
+          }
+        }
       </div>
 
       <div class="flex flex-col gap-6">
-        @for(pollutionField of pollutionFields; track $index){ @if($index >= pollutionFields.length
-        / 2){
-        <div class="flex flex-col gap-2">
-          @switch(pollutionField.type){ @case('select'){
-          <label class="text-gray-700 font-medium">{{ pollutionField.label }}:</label>
-          <select
-            [formControlName]="pollutionField.name"
-            class="bg-slate-50 p-3 rounded-lg border border-slate-300 placeholder:text-slate-400"
-          >
-            @for(type of pollutionTypes; track $index){
-            <option [value]="type">{{ type }}</option>
-            }
-          </select>
-          } @default{
-          <label class="text-gray-700 font-medium">{{ pollutionField.label }}:</label>
-          <input
-            [formControlName]="pollutionField.name"
-            [type]="pollutionField.type"
-            class="bg-slate-50 p-3 rounded-lg border border-slate-300 placeholder:text-slate-400"
-            [placeholder]="pollutionField.placeholder"
-          />
-          <span class="text-red-500 text-sm h-3">
-            @if(formGroup.get(pollutionField.name)?.invalid &&
-            formGroup.get(pollutionField.name)?.touched){
-            {{ pollutionField.error }}
-            }</span
-          >
-          } }
-        </div>
-        } }
+        @for (pollutionField of pollutionFields; track $index) {
+          @if ($index >= pollutionFields.length / 2) {
+            <div class="flex flex-col gap-2">
+              @switch (pollutionField.type) {
+                @case ('select') {
+                  <label class="text-gray-700 font-medium">{{ pollutionField.label }}:</label>
+                  <select
+                    [formControlName]="pollutionField.name"
+                    class="bg-slate-50 p-3 rounded-lg border border-slate-300 placeholder:text-slate-400"
+                  >
+                    @for (type of pollutionTypes; track $index) {
+                      <option [value]="type">{{ type }}</option>
+                    }
+                  </select>
+                }
+                @default {
+                  <label class="text-gray-700 font-medium">{{ pollutionField.label }}:</label>
+                  <input
+                    [formControlName]="pollutionField.name"
+                    [type]="pollutionField.type"
+                    class="bg-slate-50 p-3 rounded-lg border border-slate-300 placeholder:text-slate-400"
+                    [placeholder]="pollutionField.placeholder"
+                  />
+                  <span class="text-red-500 text-sm h-3">
+                    @if (
+                      formGroup.get(pollutionField.name)?.invalid &&
+                      formGroup.get(pollutionField.name)?.touched
+                    ) {
+                      {{ pollutionField.error }}
+                    }
+                  </span>
+                }
+              }
+            </div>
+          }
+        }
       </div>
     </div>
   </form>

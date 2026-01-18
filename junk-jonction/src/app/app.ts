@@ -29,6 +29,10 @@ export class App implements OnInit {
   private loadCurrentUser() {
     this.userService.getCurrentUser().subscribe({
       next: (user) => {
+        if (!user) {
+          this.store.dispatch(new UnsetUser());
+          return;
+        }
         this.store.dispatch(new SetUser(user));
       },
       error: (err) => {

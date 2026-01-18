@@ -15,16 +15,15 @@ import { Router, RouterModule } from '@angular/router';
 @Component({
   selector: 'app-signup-form',
   imports: [FormsModule, ReactiveFormsModule, RouterModule],
-  templateUrl: './signup-form.component.html',
+  templateUrl: './signin-form.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SignupFormComponent implements OnInit {
+export class SigninFormComponent implements OnInit {
   @Input() formTitle: string = 'Créer un compte';
 
   private readonly store = inject(Store);
 
-  // Form groups
-  signupFormGroup: FormGroup = new FormGroup({});
+  signinFormGroup: FormGroup = new FormGroup({});
 
   constructor(
     private userService: UserService,
@@ -32,37 +31,29 @@ export class SignupFormComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // SIGNUP
-    this.signupFormGroup = new FormGroup({
+    this.signinFormGroup = new FormGroup({
       login: new FormControl('', Validators.required),
       pass: new FormControl('', Validators.required),
-      confirmPassword: new FormControl('', Validators.required),
-      nom: new FormControl(''),
-      prenom: new FormControl(''),
     });
   }
 
-  // SIGNUP
-  onSubmit(): void {
-    if (!this.checkSignupData()) {
-      alert('Please fill in all required fields.');
+  handleResetForm(): void {
+    this.signinFormGroup.reset();
+  }
+
+  // SIGNIN
+  onSignin(): void {
+    const { login, pass } = this.signinFormGroup.value;
+    if (!login || !pass) {
+      alert('Veuillez remplir tous les champs de connexion.');
       return;
     }
 
     this.userService
-      .signup(this.signupFormGroup.value)
+      .signin(this.signinFormGroup.value)
       .pipe(first())
       .subscribe(() => {
         this.router.navigate(['/']);
       });
-  }
-
-  checkSignupData(): boolean {
-    const { login, pass, confirmPassword } = this.signupFormGroup.value;
-    return login && pass && confirmPassword;
-  }
-
-  handleResetForm(): void {
-    this.signupFormGroup.reset();
   }
 }

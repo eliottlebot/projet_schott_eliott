@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { map, Observable } from 'rxjs';
+import { catchError, map, Observable, of, tap } from 'rxjs';
 import { environment } from '../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { ApiAuthResponse, AuthPayload } from '../models/types/ApiAuthResponse';
@@ -8,7 +8,7 @@ import { SetUser, UnsetUser } from '../actions/user-actions';
 import { Router } from '@angular/router';
 import { AuthenticatedUser } from '../models/types/AuthenticatedUser';
 import { USER_KEY } from '../state/user-state';
-import { UnsetToken } from '../actions/token-actions';
+import { LoadMeError, LoadMeSuccess, SetToken, UnsetToken } from '../actions/token-actions';
 
 @Injectable({
   providedIn: 'root',
@@ -29,6 +29,7 @@ export class UserService {
       .pipe(
         map((response) => {
           this.store.dispatch(new SetUser(response.data.user));
+          this.store.dispatch(new SetToken(response.data.token));
           this.router.navigate(['/']);
           return response.data;
         }),
@@ -43,6 +44,7 @@ export class UserService {
       .pipe(
         map((response) => {
           this.store.dispatch(new SetUser(response.data.user));
+          this.store.dispatch(new SetToken(response.data.token));
           this.router.navigate(['/']);
 
           return response.data;
@@ -69,15 +71,23 @@ export class UserService {
     throw new Error('No current user found in local storage');
   }
 
-  getCurrentUser(): Observable<AuthenticatedUser> {
+  getCurrentUser(): Observable<AuthenticatedUser | null> {
     return this.http
       .get<ApiAuthResponse>(`${this.apiURL}/users/me`, {
         withCredentials: true,
       })
       .pipe(
-        map((response) => {
-          this.store.dispatch(new SetUser(response.data.user));
-          return response.data.user;
+        tap((response) => {
+          this.store.dispatch([
+            new SetUser(response.data.user),
+            new SetToken(response.data.token),
+            new LoadMeSuccess(response.data.token),
+          ]);
+        }),
+        map((response) => response.data.user),
+        catchError(() => {
+          this.store.dispatch([new UnsetUser(), new UnsetToken(), new LoadMeError()]);
+          return of(null);
         }),
       );
   }
