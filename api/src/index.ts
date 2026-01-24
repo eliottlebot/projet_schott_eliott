@@ -13,6 +13,9 @@ const PORT = process.env.PORT || 3001;
 
 const allowedOrigins = ["http://localhost:4200", "*"];
 
+app.use(express.json({ limit: "10mb" })); // Pour JSON
+app.use(express.urlencoded({ limit: "10mb", extended: true })); // Pour form data
+
 app.use(
   cors({
     origin: function (origin, callback) {

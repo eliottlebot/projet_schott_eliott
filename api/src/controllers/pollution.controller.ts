@@ -14,7 +14,7 @@ export const createPollution = asyncHandler(
       description,
       latitude,
       longitude,
-      photoUrl,
+      photo,
       createdBy,
     } = req.body;
 
@@ -31,7 +31,7 @@ export const createPollution = asyncHandler(
         description,
         latitude: latitude ? parseFloat(latitude) : null,
         longitude: longitude ? parseFloat(longitude) : null,
-        photoUrl,
+        photo,
         createdBy,
       },
     });
@@ -40,16 +40,51 @@ export const createPollution = asyncHandler(
       success: true,
       pollution,
     });
-  }
+  },
 );
 
 // READ - Récupérer toutes les pollutions
 export const getAllPollutions = asyncHandler(
   async (req: Request, res: Response) => {
+    const query = req.query.query as string | undefined;
+
     const pollutions = await prisma.pollution.findMany({
+      where: query
+        ? {
+            OR: [
+              {
+                titre: {
+                  contains: query,
+                  mode: "insensitive",
+                },
+              },
+              {
+                description: {
+                  contains: query,
+                  mode: "insensitive",
+                },
+              },
+              {
+                lieu: {
+                  contains: query,
+                  mode: "insensitive",
+                },
+              },
+              {
+                typePollution: {
+                  contains: query,
+                  mode: "insensitive",
+                },
+              },
+            ],
+          }
+        : undefined,
       include: {
         user: {
-          select: { nom: true, prenom: true },
+          select: {
+            nom: true,
+            prenom: true,
+          },
         },
       },
       orderBy: {
@@ -58,7 +93,7 @@ export const getAllPollutions = asyncHandler(
     });
 
     res.status(200).json(pollutions);
-  }
+  },
 );
 
 // READ - Récupérer une pollution par ID
@@ -77,7 +112,7 @@ export const getPollutionById = asyncHandler(
     }
 
     res.status(200).json(pollution);
-  }
+  },
 );
 
 // UPDATE - Mettre à jour une pollution
@@ -92,7 +127,7 @@ export const updatePollution = asyncHandler(
       description,
       latitude,
       longitude,
-      photoUrl,
+      photo,
     } = req.body;
 
     const existingPollution = await prisma.pollution.findUnique({
@@ -119,7 +154,7 @@ export const updatePollution = asyncHandler(
         description,
         latitude: latitude ? parseFloat(latitude) : undefined,
         longitude: longitude ? parseFloat(longitude) : undefined,
-        photoUrl,
+        photo,
       },
     });
 
@@ -127,7 +162,7 @@ export const updatePollution = asyncHandler(
       success: true,
       data: pollution,
     });
-  }
+  },
 );
 
 // DELETE - Supprimer une pollution
@@ -155,5 +190,5 @@ export const deletePollution = asyncHandler(
       success: true,
       message: "Pollution supprimée avec succès",
     });
-  }
+  },
 );

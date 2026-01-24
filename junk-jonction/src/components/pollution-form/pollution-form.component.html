@@ -4,98 +4,163 @@
   <h1 class="font-zal text-5xl text-white font-semibold text-shadow-sm text-shadow-green-500 my-4">
     Déclarer une pollution
   </h1>
-  <form [formGroup]="formGroup" class="flex items-center justify-center gap-8 w-full p-6">
-    <div class="gap-2 justify-around grid grid-cols-1 md:grid-cols-2 flex-1">
-      <div class="flex flex-col gap-6">
-        @for (pollutionField of pollutionFields; track $index) {
-          @if ($index < pollutionFields.length / 2) {
-            <div class="flex flex-col gap-2">
-              @switch (pollutionField.type) {
-                @case ('select') {
-                  <label class="text-gray-700 font-medium">{{ pollutionField.label }}:</label>
-                  <select
-                    [formControlName]="pollutionField.name"
-                    class="bg-slate-50 p-3 rounded-lg border border-slate-300 placeholder:text-slate-400"
-                  >
-                    @for (type of pollutionTypes; track $index) {
-                      <option [value]="type">{{ type }}</option>
-                    }
-                  </select>
-                }
-                @default {
-                  <label class="text-gray-700 font-medium">{{ pollutionField.label }}:</label>
-                  <input
-                    [formControlName]="pollutionField.name"
-                    [type]="pollutionField.type"
-                    class="bg-slate-50 p-3 rounded-lg border border-slate-300 placeholder:text-slate-400"
-                    [placeholder]="pollutionField.placeholder"
-                  />
-                  <span class="text-red-500 text-sm h-3">
-                    @if (
-                      formGroup.get(pollutionField.name)?.invalid &&
-                      formGroup.get(pollutionField.name)?.touched
-                    ) {
-                      {{ pollutionField.error }}
-                    }
-                  </span>
-                }
-              }
-            </div>
-          }
-        }
+
+  <form [formGroup]="formGroup" class="flex flex-col items-center justify-center gap-8 w-full p-6">
+    <!-- Titre -->
+    <div class="grid grid-cols-2 gap-2 items-center w-full">
+      <div class="flex flex-col gap-2 w-full">
+        <label class="text-white font-medium"
+          >Titre de la pollution <span class="text-red-500">*</span></label
+        >
+        <input
+          formControlName="titre"
+          type="text"
+          class="bg-slate-50 p-3 rounded-lg border border-slate-300 placeholder:text-slate-400 h-12"
+          placeholder="Entrez le titre de la pollution"
+        />
       </div>
 
-      <div class="flex flex-col gap-6">
-        @for (pollutionField of pollutionFields; track $index) {
-          @if ($index >= pollutionFields.length / 2) {
-            <div class="flex flex-col gap-2">
-              @switch (pollutionField.type) {
-                @case ('select') {
-                  <label class="text-gray-700 font-medium">{{ pollutionField.label }}:</label>
-                  <select
-                    [formControlName]="pollutionField.name"
-                    class="bg-slate-50 p-3 rounded-lg border border-slate-300 placeholder:text-slate-400"
-                  >
-                    @for (type of pollutionTypes; track $index) {
-                      <option [value]="type">{{ type }}</option>
-                    }
-                  </select>
-                }
-                @default {
-                  <label class="text-gray-700 font-medium">{{ pollutionField.label }}:</label>
-                  <input
-                    [formControlName]="pollutionField.name"
-                    [type]="pollutionField.type"
-                    class="bg-slate-50 p-3 rounded-lg border border-slate-300 placeholder:text-slate-400"
-                    [placeholder]="pollutionField.placeholder"
-                  />
-                  <span class="text-red-500 text-sm h-3">
-                    @if (
-                      formGroup.get(pollutionField.name)?.invalid &&
-                      formGroup.get(pollutionField.name)?.touched
-                    ) {
-                      {{ pollutionField.error }}
-                    }
-                  </span>
-                }
-              }
-            </div>
-          }
-        }
+      <!-- Description -->
+      <div class="flex flex-col gap-2">
+        <label class="font-medium text-white"
+          >Description de la pollution <span class="text-red-500">*</span></label
+        >
+        <input
+          formControlName="description"
+          type="text"
+          class="bg-slate-50 p-3 rounded-lg border border-slate-300 h-12 placeholder:text-slate-400"
+          placeholder="Entrez une description"
+        />
       </div>
+      @if (formGroup.get('titre')?.invalid && formGroup.get('titre')?.touched) {
+        <span class="text-red-500 text-sm h-3"> Le titre est requis </span>
+      }
+      @if (formGroup.get('description')?.invalid && formGroup.get('description')?.touched) {
+        <span class="text-red-500 text-sm h-3"> La description est requise </span>
+      }
+    </div>
+
+    <!-- Date -->
+    <div class="grid grid-cols-2 gap-2 items-center w-full">
+      <div class="flex flex-col gap-2">
+        <label class="text-white font-medium"
+          >Date de l'observation <span class="text-red-500">*</span></label
+        >
+        <input
+          formControlName="dateObservation"
+          type="date"
+          class="bg-slate-50 p-3 rounded-lg border border-slate-300 h-12 text-slate-400"
+        />
+      </div>
+
+      <!-- Type -->
+      <div class="flex flex-col gap-2">
+        <label class="text-white font-medium"
+          >Type de la pollution <span class="text-red-500">*</span></label
+        >
+        <select
+          formControlName="typePollution"
+          class="bg-slate-50 p-3 rounded-lg border border-slate-300 h-12"
+        >
+          <option value="Plastique">Plastique</option>
+          <option value="Chimique">Chimique</option>
+          <option value="Dépôt sauvage">Dépôt sauvage</option>
+          <option value="Eau">Eau</option>
+          <option value="Air">Air</option>
+          <option value="Autre">Autre</option>
+        </select>
+      </div>
+
+      @if (formGroup.get('dateObservation')?.invalid && formGroup.get('dateObservation')?.touched) {
+        <span class="text-red-500 text-sm h-3"> La date est requise </span>
+      }
+      @if (formGroup.get('typePollution')?.invalid && formGroup.get('typePollution')?.touched) {
+        <span class="text-red-500 text-sm h-3"> Le type de pollution est requis </span>
+      }
+    </div>
+
+    <div class="grid grid-cols-2 gap-2 items-center w-full">
+      <div class="flex flex-col gap-2">
+        <label class="text-white font-medium"
+          >Longitude de la pollution <span class="text-red-500">*</span></label
+        >
+        <input
+          formControlName="longitude"
+          type="number"
+          step="any"
+          class="bg-slate-50 p-3 rounded-lg border border-slate-300 h-12 placeholder:text-slate-400"
+          placeholder="Entrez la longitude de la pollution"
+        />
+      </div>
+
+      <!-- Latitude -->
+      <div class="flex flex-col gap-2">
+        <label class="text-white font-medium"
+          >Latitude de la pollution <span class="text-red-500">*</span></label
+        >
+        <input
+          formControlName="latitude"
+          type="number"
+          step="any"
+          class="bg-slate-50 p-3 rounded-lg border border-slate-300 h-12 placeholder:text-slate-400"
+          placeholder="Entrez la latitude"
+        />
+      </div>
+
+      @if (formGroup.get('longitude')?.invalid && formGroup.get('longitude')?.touched) {
+        <span class="text-red-500 text-sm h-3">
+          Entrez une longitude valide (exemple : 2.3522)
+        </span>
+      }
+      @if (formGroup.get('latitude')?.invalid && formGroup.get('latitude')?.touched) {
+        <span class="text-red-500 text-sm h-3">
+          Entrez une latitude valide (exemple : 48.8566)
+        </span>
+      }
+    </div>
+    <!-- Lieu -->
+
+    <div class="grid grid-cols-2 gap-2 items-center w-full">
+      <div class="flex flex-col gap-2">
+        <label class="text-white font-medium"
+          >Lieu de la pollution <span class="text-red-500">*</span></label
+        >
+        <input
+          formControlName="lieu"
+          type="text"
+          class="bg-slate-50 p-3 rounded-lg border border-slate-300 h-12 placeholder:text-slate-400"
+          placeholder="Entrez le lieu de la pollution"
+        />
+      </div>
+      <!-- Photo -->
+      <div class="flex flex-col gap-2">
+        <label class="text-white font-medium">Photo de la pollution (URL):</label>
+        <input
+          type="file"
+          accept="image/*"
+          class="bg-slate-50 p-3 rounded-lg border border-slate-300 h-12 text-slate-400 cursor-pointer"
+          placeholder="Choisissez une photo"
+          (change)="onFileSelected($event)"
+        />
+      </div>
+
+      @if (formGroup.get('lieu')?.invalid && formGroup.get('lieu')?.touched) {
+        <span class="text-red-500 text-sm h-3"> Le lieu est requis </span>
+      }
     </div>
   </form>
-  <div
-    class="flex bg-slate-50 p-6 rounded-lg border border-slate-200 items-center justify-center transition-all duration-100 ease-out"
-  >
+
+  <!-- Bouton + loader + message -->
+  <div class="flex bg-slate-50 p-6 rounded-lg border border-slate-200 items-center justify-center">
     <button
       type="submit"
-      class="bg-green-600 hover:bg-green-700 text-white font-medium py-3 px-6 rounded-lg transition-all disabled:opacity-50 disabled:hover:cursor-not-allowed"
+      class="bg-green-600 hover:bg-green-700 text-white font-medium py-3 px-6 rounded-lg transition-all disabled:opacity-50"
       (click)="onSubmit()"
       [disabled]="isSubmitting || formGroup.invalid"
     >
       Déclarer
     </button>
+
     <div
       class="overflow-hidden transition-all duration-100 ease-out"
       [ngClass]="isSubmitting ? 'w-6 ml-4' : 'w-0 ml-0'"
@@ -105,13 +170,11 @@
         class="h-6 w-6 animate-spin text-green-600"
       ></lucide-angular>
     </div>
-    <div
-      class="overflow-hidden transition-all duration-100 ease-out"
-      [ngClass]="!message ? 'w-0 ml-0' : ''"
-    >
-      <p class="text-center text-green-600 font-medium transition-all duration-100 ease-out ml-4">
+
+    @if (message) {
+      <p class="text-center text-green-600 font-medium ml-4">
         {{ message }}
       </p>
-    </div>
+    }
   </div>
 </div>

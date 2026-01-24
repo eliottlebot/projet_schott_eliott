@@ -47,7 +47,7 @@ export type PollutionMinAggregateOutputType = {
   description: string | null
   latitude: number | null
   longitude: number | null
-  photoUrl: string | null
+  photo: string | null
   createdAt: Date | null
   updatedAt: Date | null
   createdBy: string | null
@@ -62,7 +62,7 @@ export type PollutionMaxAggregateOutputType = {
   description: string | null
   latitude: number | null
   longitude: number | null
-  photoUrl: string | null
+  photo: string | null
   createdAt: Date | null
   updatedAt: Date | null
   createdBy: string | null
@@ -77,7 +77,7 @@ export type PollutionCountAggregateOutputType = {
   description: number
   latitude: number
   longitude: number
-  photoUrl: number
+  photo: number
   createdAt: number
   updatedAt: number
   createdBy: number
@@ -106,7 +106,7 @@ export type PollutionMinAggregateInputType = {
   description?: true
   latitude?: true
   longitude?: true
-  photoUrl?: true
+  photo?: true
   createdAt?: true
   updatedAt?: true
   createdBy?: true
@@ -121,7 +121,7 @@ export type PollutionMaxAggregateInputType = {
   description?: true
   latitude?: true
   longitude?: true
-  photoUrl?: true
+  photo?: true
   createdAt?: true
   updatedAt?: true
   createdBy?: true
@@ -136,7 +136,7 @@ export type PollutionCountAggregateInputType = {
   description?: true
   latitude?: true
   longitude?: true
-  photoUrl?: true
+  photo?: true
   createdAt?: true
   updatedAt?: true
   createdBy?: true
@@ -238,7 +238,7 @@ export type PollutionGroupByOutputType = {
   description: string | null
   latitude: number | null
   longitude: number | null
-  photoUrl: string | null
+  photo: string | null
   createdAt: Date
   updatedAt: Date
   createdBy: string | null
@@ -276,7 +276,7 @@ export type PollutionWhereInput = {
   description?: Prisma.StringNullableFilter<"Pollution"> | string | null
   latitude?: Prisma.FloatNullableFilter<"Pollution"> | number | null
   longitude?: Prisma.FloatNullableFilter<"Pollution"> | number | null
-  photoUrl?: Prisma.StringNullableFilter<"Pollution"> | string | null
+  photo?: Prisma.StringNullableFilter<"Pollution"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Pollution"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Pollution"> | Date | string
   createdBy?: Prisma.StringNullableFilter<"Pollution"> | string | null
@@ -292,7 +292,7 @@ export type PollutionOrderByWithRelationInput = {
   description?: Prisma.SortOrderInput | Prisma.SortOrder
   latitude?: Prisma.SortOrderInput | Prisma.SortOrder
   longitude?: Prisma.SortOrderInput | Prisma.SortOrder
-  photoUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  photo?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   createdBy?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -311,7 +311,7 @@ export type PollutionWhereUniqueInput = Prisma.AtLeast<{
   description?: Prisma.StringNullableFilter<"Pollution"> | string | null
   latitude?: Prisma.FloatNullableFilter<"Pollution"> | number | null
   longitude?: Prisma.FloatNullableFilter<"Pollution"> | number | null
-  photoUrl?: Prisma.StringNullableFilter<"Pollution"> | string | null
+  photo?: Prisma.StringNullableFilter<"Pollution"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Pollution"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Pollution"> | Date | string
   createdBy?: Prisma.StringNullableFilter<"Pollution"> | string | null
@@ -327,7 +327,7 @@ export type PollutionOrderByWithAggregationInput = {
   description?: Prisma.SortOrderInput | Prisma.SortOrder
   latitude?: Prisma.SortOrderInput | Prisma.SortOrder
   longitude?: Prisma.SortOrderInput | Prisma.SortOrder
-  photoUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  photo?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   createdBy?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -350,7 +350,7 @@ export type PollutionScalarWhereWithAggregatesInput = {
   description?: Prisma.StringNullableWithAggregatesFilter<"Pollution"> | string | null
   latitude?: Prisma.FloatNullableWithAggregatesFilter<"Pollution"> | number | null
   longitude?: Prisma.FloatNullableWithAggregatesFilter<"Pollution"> | number | null
-  photoUrl?: Prisma.StringNullableWithAggregatesFilter<"Pollution"> | string | null
+  photo?: Prisma.StringNullableWithAggregatesFilter<"Pollution"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Pollution"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Pollution"> | Date | string
   createdBy?: Prisma.StringNullableWithAggregatesFilter<"Pollution"> | string | null
@@ -364,7 +364,7 @@ export type PollutionCreateInput = {
   description?: string | null
   latitude?: number | null
   longitude?: number | null
-  photoUrl?: string | null
+  photo?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   user?: Prisma.UserCreateNestedOneWithoutPollutionsInput
@@ -379,7 +379,7 @@ export type PollutionUncheckedCreateInput = {
   description?: string | null
   latitude?: number | null
   longitude?: number | null
-  photoUrl?: string | null
+  photo?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy?: string | null
@@ -393,7 +393,7 @@ export type PollutionUpdateInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  photoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  photo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneWithoutPollutionsNestedInput
@@ -408,7 +408,7 @@ export type PollutionUncheckedUpdateInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  photoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  photo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -423,7 +423,7 @@ export type PollutionCreateManyInput = {
   description?: string | null
   latitude?: number | null
   longitude?: number | null
-  photoUrl?: string | null
+  photo?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy?: string | null
@@ -437,7 +437,7 @@ export type PollutionUpdateManyMutationInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  photoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  photo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -451,7 +451,7 @@ export type PollutionUncheckedUpdateManyInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  photoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  photo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -476,7 +476,7 @@ export type PollutionCountOrderByAggregateInput = {
   description?: Prisma.SortOrder
   latitude?: Prisma.SortOrder
   longitude?: Prisma.SortOrder
-  photoUrl?: Prisma.SortOrder
+  photo?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   createdBy?: Prisma.SortOrder
@@ -497,7 +497,7 @@ export type PollutionMaxOrderByAggregateInput = {
   description?: Prisma.SortOrder
   latitude?: Prisma.SortOrder
   longitude?: Prisma.SortOrder
-  photoUrl?: Prisma.SortOrder
+  photo?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   createdBy?: Prisma.SortOrder
@@ -512,7 +512,7 @@ export type PollutionMinOrderByAggregateInput = {
   description?: Prisma.SortOrder
   latitude?: Prisma.SortOrder
   longitude?: Prisma.SortOrder
-  photoUrl?: Prisma.SortOrder
+  photo?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   createdBy?: Prisma.SortOrder
@@ -594,7 +594,7 @@ export type PollutionCreateWithoutUserInput = {
   description?: string | null
   latitude?: number | null
   longitude?: number | null
-  photoUrl?: string | null
+  photo?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -608,7 +608,7 @@ export type PollutionUncheckedCreateWithoutUserInput = {
   description?: string | null
   latitude?: number | null
   longitude?: number | null
-  photoUrl?: string | null
+  photo?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -651,7 +651,7 @@ export type PollutionScalarWhereInput = {
   description?: Prisma.StringNullableFilter<"Pollution"> | string | null
   latitude?: Prisma.FloatNullableFilter<"Pollution"> | number | null
   longitude?: Prisma.FloatNullableFilter<"Pollution"> | number | null
-  photoUrl?: Prisma.StringNullableFilter<"Pollution"> | string | null
+  photo?: Prisma.StringNullableFilter<"Pollution"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Pollution"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Pollution"> | Date | string
   createdBy?: Prisma.StringNullableFilter<"Pollution"> | string | null
@@ -666,7 +666,7 @@ export type PollutionCreateManyUserInput = {
   description?: string | null
   latitude?: number | null
   longitude?: number | null
-  photoUrl?: string | null
+  photo?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -679,7 +679,7 @@ export type PollutionUpdateWithoutUserInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  photoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  photo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -693,7 +693,7 @@ export type PollutionUncheckedUpdateWithoutUserInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  photoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  photo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -707,7 +707,7 @@ export type PollutionUncheckedUpdateManyWithoutUserInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  photoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  photo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -723,7 +723,7 @@ export type PollutionSelect<ExtArgs extends runtime.Types.Extensions.InternalArg
   description?: boolean
   latitude?: boolean
   longitude?: boolean
-  photoUrl?: boolean
+  photo?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   createdBy?: boolean
@@ -739,7 +739,7 @@ export type PollutionSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Ext
   description?: boolean
   latitude?: boolean
   longitude?: boolean
-  photoUrl?: boolean
+  photo?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   createdBy?: boolean
@@ -755,7 +755,7 @@ export type PollutionSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Ext
   description?: boolean
   latitude?: boolean
   longitude?: boolean
-  photoUrl?: boolean
+  photo?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   createdBy?: boolean
@@ -771,13 +771,13 @@ export type PollutionSelectScalar = {
   description?: boolean
   latitude?: boolean
   longitude?: boolean
-  photoUrl?: boolean
+  photo?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   createdBy?: boolean
 }
 
-export type PollutionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "titre" | "lieu" | "dateObservation" | "typePollution" | "description" | "latitude" | "longitude" | "photoUrl" | "createdAt" | "updatedAt" | "createdBy", ExtArgs["result"]["pollution"]>
+export type PollutionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "titre" | "lieu" | "dateObservation" | "typePollution" | "description" | "latitude" | "longitude" | "photo" | "createdAt" | "updatedAt" | "createdBy", ExtArgs["result"]["pollution"]>
 export type PollutionInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.Pollution$userArgs<ExtArgs>
 }
@@ -802,7 +802,7 @@ export type $PollutionPayload<ExtArgs extends runtime.Types.Extensions.InternalA
     description: string | null
     latitude: number | null
     longitude: number | null
-    photoUrl: string | null
+    photo: string | null
     createdAt: Date
     updatedAt: Date
     createdBy: string | null
@@ -1238,7 +1238,7 @@ export interface PollutionFieldRefs {
   readonly description: Prisma.FieldRef<"Pollution", 'String'>
   readonly latitude: Prisma.FieldRef<"Pollution", 'Float'>
   readonly longitude: Prisma.FieldRef<"Pollution", 'Float'>
-  readonly photoUrl: Prisma.FieldRef<"Pollution", 'String'>
+  readonly photo: Prisma.FieldRef<"Pollution", 'String'>
   readonly createdAt: Prisma.FieldRef<"Pollution", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Pollution", 'DateTime'>
   readonly createdBy: Prisma.FieldRef<"Pollution", 'String'>

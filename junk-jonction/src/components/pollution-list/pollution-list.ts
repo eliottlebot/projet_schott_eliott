@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject, Signal } from '@angular/core';
 import { Dialog } from '@angular/cdk/dialog';
-import { BehaviorSubject, map, Observable } from 'rxjs';
+import { BehaviorSubject, debounceTime, map, Observable } from 'rxjs';
 import { PollutionService } from '../../services/pollution.service';
 import { AsyncPipe, DatePipe, CommonModule } from '@angular/common';
 import { LucideAngularModule, Trash2, Info, Heart } from 'lucide-angular';
@@ -10,10 +10,17 @@ import { FavoriteService } from '../../services/favorite.service';
 import { UnsetFavorite } from '../../actions/favorites-actions';
 import { Store } from '@ngxs/store';
 import { PollutionItemComponent } from '../pollution-item/pollution-item.component';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-pollution-list',
-  imports: [CommonModule, AsyncPipe, LucideAngularModule, PollutionItemComponent],
+  imports: [
+    CommonModule,
+    AsyncPipe,
+    LucideAngularModule,
+    PollutionItemComponent,
+    ReactiveFormsModule,
+  ],
   templateUrl: './pollution-list.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -30,17 +37,23 @@ export class PollutionList {
 
   favoritesCount$ = this.favoriteService.favoritesCount$;
 
+  searchQueryControl = new FormControl('');
+
   constructor(private pollutionService: PollutionService) {
     this.pollutionList$ = this.pollutionService.getPollutions();
+    this.searchQueryControl.valueChanges.pipe(debounceTime(400)).subscribe((query) => {
+      console.log('Searching for:', query);
+      this.pollutionList$ = this.pollutionService.getPollutions(query || undefined);
+    });
   }
 
   sortByDate() {
     this.pollutionList$ = this.pollutionList$.pipe(
       map((pollutions) =>
         [...pollutions].sort(
-          (a, b) => new Date(b.dateObservation).getTime() - new Date(a.dateObservation).getTime()
-        )
-      )
+          (a, b) => new Date(b.dateObservation).getTime() - new Date(a.dateObservation).getTime(),
+        ),
+      ),
     );
   }
 
@@ -59,5 +72,9 @@ export class PollutionList {
     this.dialog.open(PollutionDetailsModal, {
       data: pollution,
     });
+  }
+
+  onSearch(query: string) {
+    console.log('Searching for:', query);
   }
 }

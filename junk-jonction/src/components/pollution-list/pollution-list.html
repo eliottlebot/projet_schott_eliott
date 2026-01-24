@@ -1,44 +1,59 @@
-<div class="bg-[url(/jj-bg.webp)] h-full flex-1 bg-cover bg-center flex flex-col">
+<div class="bg-[url(/jj-bg.webp)] h-full flex-1 bg-cover bg-center flex flex-col justify-start">
   <div class="flex justify-between p-5 bg-white/20 shadow-b-lg items-center backdrop-blur-xs">
     <h1
       class="font-zal text-5xl text-white font-semibold text-shadow-sm text-shadow-green-500 my-4"
     >
       Liste des pollutions
     </h1>
+    <div>
+      <input
+        type="text"
+        placeholder="Rechercher une pollution..."
+        class="p-2 rounded-lg border border-slate-300"
+        [formControl]="searchQueryControl"
+      />
+    </div>
     <div class="flex justify-end gap-4 items-center">
-      <p class="rounded-full bg-slate-50 hover:bg-slate-100 border border-slate-200 px-4 py-2">
-        @if(favoritesCount$ | async; as favoritesCount){
-
-        {{ favoritesCount }} pollutions marquées en favori. } @else {Aucune pollutions marquées en
-        favori. }
+      <div class="flex gap-2">
+        <button
+          class="rounded-full bg-slate-50 hover:bg-slate-100 border border-slate-200 px-4 py-2"
+          (click)="sortByDate()"
+        >
+          Trier par date décroissante
+        </button>
+        <button
+          class="rounded-full bg-slate-50 hover:bg-slate-100 border border-slate-200 px-4 py-2"
+          (click)="resetSorting()"
+        >
+          Réinitialiser le tri
+        </button>
+      </div>
+    </div>
+  </div>
+  @if (pollutionList$ | async; as pollutionList) {
+    <div class="flex-1 overflow-auto backdrop-blur-xs">
+      <p
+        class="inline-flex items-center gap-2 text-red-500 p-2 hover:scale-110 transition-all cursor-pointer w-fit bg-red-200 rounded-full border border-red-300 m-2"
+      >
+        @if (favoritesCount$ | async; as favoritesCount) {
+          {{ favoritesCount }}
+          <img src="favorite_selected.svg" width="30px" height="30px" class="cursor-pointer" />
+        } @else {
+          0
+          <img src="favorite_selected.svg" width="30px" height="30px" class="cursor-pointer" />
+        }
       </p>
-      <button
-        class="rounded-full bg-slate-50 hover:bg-slate-100 border border-slate-200 px-4 py-2"
-        (click)="sortByDate()"
-      >
-        Trier par date décroissante
-      </button>
-      <button
-        class="rounded-full bg-slate-50 hover:bg-slate-100 border border-slate-200 px-4 py-2"
-        (click)="resetSorting()"
-      >
-        Réinitialiser le tri
-      </button>
+      <div class="mx-2 grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+        @for (pollution of pollutionList; track $index) {
+          <app-pollution-item
+            [pollution]="pollution"
+            (deletePollution)="deletePollution($event)"
+            (showDetails)="showDetails($event)"
+          ></app-pollution-item>
+        }
+      </div>
     </div>
-  </div>
-  @if(pollutionList$ | async; as pollutionList){
-  <div class="flex-1 overflow-auto backdrop-blur-xs">
-    <div class="m-2 grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-      @for(pollution of pollutionList; track $index){
-      <app-pollution-item
-        [pollution]="pollution"
-        (deletePollution)="deletePollution($event)"
-        (showDetails)="showDetails($event)"
-      ></app-pollution-item>
-      }
-    </div>
-  </div>
   } @else {
-  <p class="p-4">Chargement de la liste...</p>
+    <p class="p-4">Chargement de la liste...</p>
   }
 </div>

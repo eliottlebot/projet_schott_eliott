@@ -14,6 +14,7 @@ import { LucideAngularModule, LoaderCircle } from 'lucide-angular';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { CommonModule } from '@angular/common';
 import { UserService } from '../../services/user.service';
+import { fileToBase64 } from '../../utils/file-utils';
 
 @Component({
   selector: 'app-pollution-form',
@@ -35,10 +36,12 @@ export class PollutionFormComponent implements OnInit {
   message: string = '';
   showDiv: boolean = false;
 
+  selectedFile: File | null = null;
+
   constructor(
     private pollutionService: PollutionService,
     private userService: UserService,
-    private destroyRef: DestroyRef
+    private destroyRef: DestroyRef,
   ) {}
 
   ngOnInit(): void {
@@ -50,7 +53,6 @@ export class PollutionFormComponent implements OnInit {
       lieu: new FormControl('', Validators.required),
       latitude: new FormControl('', [Validators.required, latLongValidator()]),
       longitude: new FormControl('', [Validators.required, latLongValidator()]),
-      photo_url: new FormControl(''),
     });
 
     this.formGroup.valueChanges.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => {
@@ -59,23 +61,49 @@ export class PollutionFormComponent implements OnInit {
     });
   }
 
-  onSubmit() {
+  onFileSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    const file = input.files?.[0];
+
+    if (!file) return;
+
+    const MAX_SIZE = 2 * 1024 * 1024; // 2 MB en bytes
+
+    if (file.size > MAX_SIZE) {
+      alert("L'image est trop grande ! Maximum 2 MB.");
+      input.value = ''; // Reset l'input
+      return;
+    }
+
+    this.selectedFile = file;
+  }
+
+  async onSubmit() {
+    if (this.formGroup.invalid) return;
+
     this.isSubmitting = true;
     this.message = '';
-    const pollution: Pollution = this.formGroup.value as Pollution;
-    const user = this.userService.getCurrentUserFromLocalStorage();
-    pollution.createdBy = user.id;
-    this.pollutionService.createPollution(this.formGroup.value as Pollution).subscribe({
-      next: (response) => {
-        this.formGroup.reset();
-        this.isSubmitting = false;
-        this.message = 'Pollution déclarée avec succès !';
-      },
-      error: (error) => {
-        console.error('Error creating pollution:', error);
-        this.isSubmitting = false;
-        this.message = 'Erreur lors de la déclaration de la pollution.';
-      },
-    });
+
+    const pollution: Pollution = {
+      ...this.formGroup.value,
+      createdBy: this.userService.getCurrentUserFromLocalStorage().id,
+    };
+
+    try {
+      if (this.selectedFile) {
+        pollution.photo = await fileToBase64(this.selectedFile);
+      }
+
+      await this.pollutionService.createPollution(pollution).subscribe();
+
+      this.formGroup.reset();
+      this.selectedFile = null;
+      this.message = 'Pollution déclarée avec succès !';
+    } catch (error) {
+      console.error(error);
+      this.message = 'Erreur lors de la déclaration de la pollution.';
+    } finally {
+      this.isSubmitting = false;
+    }
   }
 }

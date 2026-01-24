@@ -7,7 +7,7 @@ export interface Pollution {
   lieu: string;
   latitude: number;
   longitude: number;
-  photo_url?: string;
+  photo?: string;
   createdBy?: string;
   user?: { nom: string; prenom: string };
 }

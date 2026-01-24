@@ -2,10 +2,10 @@
   <div class="flex w-full justify-between items-center p-4 bg-green-600 text-white">
     <div>
       <h2 class="text-2xl font-bold">{{ pollution.titre }}</h2>
-      @if(pollution.user){
-      <p class="text-slate-200">Créée par {{ pollution.user.nom }}</p>
+      @if (pollution.user) {
+        <p class="text-slate-200">Créée par {{ pollution.user.nom }}</p>
       } @else {
-      <p class="text-slate-200">Créée par Anonyme</p>
+        <p class="text-slate-200">Créée par Anonyme</p>
       }
     </div>
 
@@ -19,7 +19,7 @@
     <div class="mr-8">
       <p class="flex flex-col text-gray-700">
         <strong>Observée le :</strong>
-        {{ pollution.dateObservation | date : 'medium' }}
+        {{ pollution.dateObservation | date: 'medium' }}
       </p>
       <p class="flex flex-col text-gray-700">
         <strong>Type de Pollution :</strong> {{ pollution.typePollution }}
@@ -33,18 +33,18 @@
       </p>
     </div>
     <div
-      class="flex flex-col items-center justify-center gap-4 text-center bg-slate-50 p-6 rounded-lg h-full"
+      class="flex flex-col items-center justify-center gap-4 text-center bg-slate-50 p-6 rounded-lg h-full max-w-64 overflow-hidden"
     >
-      @if(pollution.photo_url){
-      <p><strong>Photo :</strong></p>
-      <img
-        [src]="pollution.photo_url"
-        alt="Photo de la pollution"
-        class="h-auto rounded-lg border border-slate-300 mt-2"
-      />
+      @if (pollution.photo) {
+        <img
+          [src]="pollution.photo"
+          alt="Photo de la pollution"
+          class="cursor-zoom-in hover:scale-105 transition-all"
+          (click)="displayImage(pollution.photo)"
+        />
       } @else {
-      <lucide-icon [img]="CameraOff" class="w-12 h-12 text-slate-600"></lucide-icon>
-      <p>Aucune photo fournie !</p>
+        <lucide-icon [img]="CameraOff" class="w-12 h-12 text-slate-600"></lucide-icon>
+        <p>Aucune photo fournie !</p>
       }
     </div>
   </div>
