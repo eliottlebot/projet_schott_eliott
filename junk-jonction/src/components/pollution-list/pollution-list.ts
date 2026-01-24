@@ -1,16 +1,20 @@
-import { ChangeDetectionStrategy, Component, inject, Signal } from '@angular/core';
-import { Dialog } from '@angular/cdk/dialog';
-import { BehaviorSubject, debounceTime, map, Observable } from 'rxjs';
-import { PollutionService } from '../../services/pollution.service';
-import { AsyncPipe, DatePipe, CommonModule } from '@angular/common';
-import { LucideAngularModule, Trash2, Info, Heart } from 'lucide-angular';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+import {
+  combineLatest,
+  debounceTime,
+  map,
+  Observable,
+  shareReplay,
+  startWith,
+  switchMap,
+} from 'rxjs';
+import { AsyncPipe, CommonModule } from '@angular/common';
+import { LucideAngularModule } from 'lucide-angular';
 import { Pollution } from '../../models/types/Pollution';
-import { PollutionDetailsModal } from '../pollution-details-modal/pollution-details-modal';
-import { FavoriteService } from '../../services/favorite.service';
-import { UnsetFavorite } from '../../actions/favorites-actions';
-import { Store } from '@ngxs/store';
 import { PollutionItemComponent } from '../pollution-item/pollution-item.component';
-import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
+import { PollutionListBase } from './pollution-list-base';
+import { Favorite } from '../favorite/favorite';
 
 @Component({
   selector: 'app-pollution-list',
@@ -20,61 +24,28 @@ import { FormControl, ReactiveFormsModule } from '@angular/forms';
     LucideAngularModule,
     PollutionItemComponent,
     ReactiveFormsModule,
+    Favorite,
   ],
   templateUrl: './pollution-list.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
 })
-export class PollutionList {
-  private readonly favoriteService = inject(FavoriteService);
-  private readonly store = inject(Store);
-  private readonly dialog = inject(Dialog);
-
+export class PollutionList extends PollutionListBase {
   pollutionList$: Observable<Pollution[]>;
-  selectedPollution$ = new BehaviorSubject<Pollution | null>(null);
-  Trash = Trash2;
-  Info = Info;
-  Heart = Heart;
+  private readonly pollutionsFromApi$;
 
-  favoritesCount$ = this.favoriteService.favoritesCount$;
+  constructor() {
+    super();
 
-  searchQueryControl = new FormControl('');
-
-  constructor(private pollutionService: PollutionService) {
-    this.pollutionList$ = this.pollutionService.getPollutions();
-    this.searchQueryControl.valueChanges.pipe(debounceTime(400)).subscribe((query) => {
-      console.log('Searching for:', query);
-      this.pollutionList$ = this.pollutionService.getPollutions(query || undefined);
-    });
-  }
-
-  sortByDate() {
-    this.pollutionList$ = this.pollutionList$.pipe(
-      map((pollutions) =>
-        [...pollutions].sort(
-          (a, b) => new Date(b.dateObservation).getTime() - new Date(a.dateObservation).getTime(),
-        ),
-      ),
+    this.pollutionsFromApi$ = this.searchQueryControl.valueChanges.pipe(
+      startWith(''),
+      debounceTime(300),
+      switchMap((query) => this.pollutionService.getPollutions(query || undefined)),
+      shareReplay(1),
     );
-  }
 
-  resetSorting() {
-    this.pollutionList$ = this.pollutionService.getPollutions();
-  }
-
-  deletePollution(id: number) {
-    this.pollutionService.deletePollution(id).subscribe(() => {
-      this.store.dispatch(new UnsetFavorite(id));
-      this.pollutionList$ = this.pollutionService.getPollutions();
-    });
-  }
-
-  showDetails(pollution: Pollution) {
-    this.dialog.open(PollutionDetailsModal, {
-      data: pollution,
-    });
-  }
-
-  onSearch(query: string) {
-    console.log('Searching for:', query);
+    this.pollutionList$ = combineLatest([this.pollutionsFromApi$, this.sortMode$]).pipe(
+      map(([pollutions, sortMode]) => this.sortPollutions(pollutions, sortMode)),
+    );
   }
 }

@@ -1,0 +1,11 @@
+<p
+  class="inline-flex items-center gap-2 text-red-500 p-2 hover:scale-110 transition-all cursor-pointer w-fit bg-red-200 rounded-full border border-red-300 m-2"
+>
+  @if (favoritesCount$ | async; as favoritesCount) {
+    {{ favoritesCount }}
+    <img src="favorite_selected.svg" width="30px" height="30px" class="cursor-pointer" />
+  } @else {
+    0
+    <img src="favorite_selected.svg" width="30px" height="30px" class="cursor-pointer" />
+  }
+</p>

@@ -17,9 +17,9 @@ export class PollutionService {
     return this.http.post<Pollution>(`${this.apiURL}/pollutions`, pollution);
   }
 
-  getPollutions(filter?: string): Observable<Pollution[]> {
+  getPollutions(query?: string): Observable<Pollution[]> {
     return this.http.get<Pollution[]>(`${this.apiURL}/pollutions`, {
-      params: filter ? { filter } : {},
+      params: query ? { query } : {},
     });
   }
 
@@ -30,7 +30,7 @@ export class PollutionService {
   updatePollution(updatedPollution: Pollution): Observable<Pollution> {
     return this.http.put<Pollution>(
       `${this.apiURL}/pollutions/${updatedPollution.id}`,
-      updatedPollution
+      updatedPollution,
     );
   }
 
