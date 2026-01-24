@@ -29,7 +29,6 @@ export abstract class PollutionListBase {
   Loader = Loader;
 
   protected readonly sortMode$ = new BehaviorSubject<'none' | 'dateDesc'>('none');
-  favoritesCount$ = this.favoriteService.favoritesCount$;
   searchQueryControl = new FormControl('');
 
   protected sortPollutions(pollutions: Pollution[], sortMode: 'none' | 'dateDesc'): Pollution[] {

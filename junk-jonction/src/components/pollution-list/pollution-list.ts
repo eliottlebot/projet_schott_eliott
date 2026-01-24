@@ -15,6 +15,7 @@ import { PollutionItemComponent } from '../pollution-item/pollution-item.compone
 import { ReactiveFormsModule } from '@angular/forms';
 import { PollutionListBase } from './pollution-list-base';
 import { Favorite } from '../favorite/favorite';
+import { LoaderComponent } from '../loader/loader';
 
 @Component({
   selector: 'app-pollution-list',
@@ -25,6 +26,7 @@ import { Favorite } from '../favorite/favorite';
     PollutionItemComponent,
     ReactiveFormsModule,
     Favorite,
+    LoaderComponent,
   ],
   templateUrl: './pollution-list.html',
   changeDetection: ChangeDetectionStrategy.OnPush,

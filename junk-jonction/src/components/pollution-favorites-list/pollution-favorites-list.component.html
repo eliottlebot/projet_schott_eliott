@@ -46,11 +46,8 @@
       </div>
     }
   } @else {
-    <div>
-      <lucide-icon
-        [img]="Loader"
-        class="w-12 h-12 text-slate-300 animate-spin m-auto mt-20"
-      ></lucide-icon>
+    <div class="h-full w-full flex items-center justify-center">
+      <app-loader />
     </div>
   }
 </div>

@@ -8,31 +8,33 @@ import {
 } from '@angular/forms';
 import { first } from 'rxjs/operators';
 import { UserService } from '../../services/user.service';
-import { Store } from '@ngxs/store';
-import { SetToken } from '../../actions/token-actions';
-import { Router, RouterModule } from '@angular/router';
+import { RouterModule } from '@angular/router';
+import { BehaviorSubject } from 'rxjs';
+import { LoaderComponent } from '../loader/loader';
+import { AsyncPipe } from '@angular/common';
+import { AuthError } from '../../models/AuthContext';
 
 @Component({
   selector: 'app-signup-form',
-  imports: [FormsModule, ReactiveFormsModule, RouterModule],
+  imports: [FormsModule, ReactiveFormsModule, RouterModule, LoaderComponent, AsyncPipe],
   templateUrl: './signup-form.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  host: {
+    class:
+      'flex items-center justify-center bg-[url(/jj-bg.webp)] h-full flex-1 bg-cover bg-center',
+  },
 })
 export class SignupFormComponent implements OnInit {
   @Input() formTitle: string = 'Créer un compte';
 
-  private readonly store = inject(Store);
+  message$ = new BehaviorSubject('');
+  isLoading$ = new BehaviorSubject(false);
 
-  // Form groups
   signupFormGroup: FormGroup = new FormGroup({});
 
-  constructor(
-    private userService: UserService,
-    private router: Router,
-  ) {}
+  constructor(private userService: UserService) {}
 
   ngOnInit(): void {
-    // SIGNUP
     this.signupFormGroup = new FormGroup({
       login: new FormControl('', Validators.required),
       pass: new FormControl('', Validators.required),
@@ -42,24 +44,34 @@ export class SignupFormComponent implements OnInit {
     });
   }
 
-  // SIGNUP
   onSubmit(): void {
+    this.message$.next('');
+    this.isLoading$.next(true);
+
     if (!this.checkSignupData()) {
-      alert('Please fill in all required fields.');
+      this.message$.next('Veuillez remplir tous les champs.');
+      this.isLoading$.next(false);
       return;
     }
 
     this.userService
       .signup(this.signupFormGroup.value)
       .pipe(first())
-      .subscribe(() => {
-        this.router.navigate(['/']);
+      .subscribe({
+        next: () => {},
+        error: (error: AuthError) => {
+          this.isLoading$.next(false);
+          this.message$.next(error.message);
+        },
       });
   }
 
   checkSignupData(): boolean {
     const { login, pass, confirmPassword } = this.signupFormGroup.value;
-    return login && pass && confirmPassword;
+    if (!login || !pass || !confirmPassword) {
+      return false;
+    }
+    return true;
   }
 
   handleResetForm(): void {

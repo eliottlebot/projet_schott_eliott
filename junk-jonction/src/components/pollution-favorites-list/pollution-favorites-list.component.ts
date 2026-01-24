@@ -6,9 +6,17 @@ import { Pollution } from '../../models/types/Pollution';
 import { PollutionItemComponent } from '../pollution-item/pollution-item.component';
 import { PollutionListBase } from '../pollution-list/pollution-list-base';
 import { Favorite } from '../favorite/favorite';
+import { LoaderComponent } from '../loader/loader';
 @Component({
   selector: 'app-pollution-favorites-list',
-  imports: [CommonModule, AsyncPipe, LucideAngularModule, PollutionItemComponent, Favorite],
+  imports: [
+    CommonModule,
+    AsyncPipe,
+    LucideAngularModule,
+    PollutionItemComponent,
+    Favorite,
+    LoaderComponent,
+  ],
   templateUrl: './pollution-favorites-list.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

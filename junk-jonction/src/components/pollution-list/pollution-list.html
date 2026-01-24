@@ -6,6 +6,7 @@
       Liste des pollutions
     </h1>
     <div class="flex justify-end gap-4 items-center">
+      <app-favorite />
       <lucide-icon [img]="Search" class="w-6 h-6 text-slate-50"></lucide-icon>
       <input
         type="text"
@@ -31,8 +32,7 @@
   </div>
   @if (pollutionList$ | async; as pollutionList) {
     <div class="flex-1 overflow-auto backdrop-blur-xs">
-      <app-favorite />
-      <div class="mx-2 grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+      <div class="m-2 grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
         @for (pollution of pollutionList; track $index) {
           <app-pollution-item
             [pollution]="pollution"
@@ -43,11 +43,8 @@
       </div>
     </div>
   } @else {
-    <div>
-      <lucide-icon
-        [img]="Loader"
-        class="w-12 h-12 text-slate-300 animate-spin m-auto mt-20"
-      ></lucide-icon>
+    <div class="h-full w-full flex items-center justify-center">
+      <app-loader />
     </div>
   }
 </div>

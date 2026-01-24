@@ -2,9 +2,10 @@ import { Request, Response } from "express";
 import { prisma } from "../lib/prisma.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { ApiError } from "../middleware/errorHandler.js";
-import { generateJwt, normalizeToken, verifyJwt } from "../utils/jwt-utils.js";
+import { generateJwt, verifyJwt } from "../utils/jwt-utils.js";
 
 const USER_COOKIE_TOKEN_NAME = "auth_token";
+const TOKEN_LIFE_DURATION_MS = 1000 * 60 * 60 * 24;
 
 export const logout = asyncHandler(async (req: Request, res: Response) => {
   const token = req.cookies[USER_COOKIE_TOKEN_NAME];
@@ -81,7 +82,7 @@ export const createUser = asyncHandler(async (req: Request, res: Response) => {
 
   res.cookie(USER_COOKIE_TOKEN_NAME, token, {
     httpOnly: true,
-    maxAge: 1000000,
+    maxAge: TOKEN_LIFE_DURATION_MS,
     sameSite: "lax",
     secure: false,
     path: "/",
@@ -122,7 +123,7 @@ export const getUser = asyncHandler(async (req: Request, res: Response) => {
 
   res.cookie(USER_COOKIE_TOKEN_NAME, token, {
     httpOnly: true,
-    maxAge: 1000000,
+    maxAge: TOKEN_LIFE_DURATION_MS,
     sameSite: "lax",
     secure: false,
     path: "/",

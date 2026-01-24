@@ -1,5 +1,5 @@
-<div class="min-h-screen flex items-center justify-center p-4 sm:p-8">
-  <div class="w-full max-w-4xl bg-white rounded-xl shadow-lg p-6 sm:p-10">
+<div class="min-h-screen flex items-center justify-center p-4 sm:p-8 backdrop-blur-xs w-full">
+  <div class="w-1/3 max-w-4xl bg-white rounded-xl shadow-lg p-6 sm:p-10">
     <h1 class="text-center text-2xl font-semibold mb-8">{{ formTitle }}</h1>
 
     <form [formGroup]="signinFormGroup" class="bg-slate-50 p-6 rounded-lg flex flex-col gap-4">
@@ -10,7 +10,7 @@
         id="login"
         formControlName="login"
         type="text"
-        class="bg-white p-2 rounded-lg border"
+        class="bg-white p-2 rounded-lg border border-slate-400"
       />
 
       <label for="signinPassword">Mot de passe</label>
@@ -18,18 +18,24 @@
         id="pass"
         formControlName="pass"
         type="password"
-        class="bg-white p-2 rounded-lg border"
+        class="bg-white p-2 rounded-lg border border-slate-400"
       />
 
       <button
         type="button"
-        class="mt-4 bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition"
+        class="mt-4 bg-green-600 text-white py-2 rounded-lg hover:bg-green-700 transition cursor-pointer"
         (click)="onSignin()"
       >
         Se connecter
       </button>
+      @if (isLoading$ | async) {
+        <app-loader />
+      }
+      @if (message$ | async; as message) {
+        <p class="text-center text-red-500">{{ message }}</p>
+      }
     </form>
-    <a class="text-blue-600 hover:underline mt-4 block text-center" routerLink="/user/signup">
+    <a class="text-blue-600 hover:underline mt-2 block text-center" routerLink="/user/signup">
       Pas de compte ? Inscrivez-vous ici.
     </a>
   </div>
