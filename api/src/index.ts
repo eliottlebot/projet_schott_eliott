@@ -11,7 +11,10 @@ dotenv.config();
 const app: Application = express();
 const PORT = process.env.PORT || 3001;
 
-const allowedOrigins = ["http://localhost:4200", "*"];
+const allowedOrigins = [
+  "http://localhost:4200",
+  "https://projet-schott-eliott.onrender.com",
+];
 
 app.use(express.json({ limit: "10mb" })); // Pour JSON
 app.use(express.urlencoded({ limit: "10mb", extended: true })); // Pour form data
