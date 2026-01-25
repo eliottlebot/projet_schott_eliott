@@ -16,8 +16,8 @@ const allowedOrigins = [
   "https://projet-schott-eliott.onrender.com",
 ];
 
-app.use(express.json({ limit: "10mb" })); // Pour JSON
-app.use(express.urlencoded({ limit: "10mb", extended: true })); // Pour form data
+app.use(express.json({ limit: "10mb" }));
+app.use(express.urlencoded({ limit: "10mb", extended: true }));
 
 app.use(
   cors({
