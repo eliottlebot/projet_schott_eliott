@@ -1,64 +1,78 @@
-<div class="min-h-screen flex items-center justify-center p-4 sm:p-8 backdrop-blur-xs w-full">
-  <div class="w-full max-w-4xl bg-white rounded-xl shadow-lg p-6 sm:p-10">
-    <h1 class="text-center text-2xl font-semibold mb-8">{{ formTitle }}</h1>
-    <form [formGroup]="signupFormGroup" class="bg-slate-50 p-6 rounded-lg flex flex-col gap-4">
-      <h2 class="text-lg font-medium mb-2">Inscription</h2>
+<div
+  class="flex flex-1 items-center justify-center backdrop-blur-xs h-full w-full p-8 pt-20 sm:pt-0"
+>
+  <div
+    class="relative w-full lg:w-1/3 sm:h-4/5 bg-slate-50 rounded-xl shadow-lg p-6 sm:p-10 h-auto flex flex-col justify-around border border-slate-300"
+  >
+    <img src="heart-logo.svg" class="absolute top-4 right-4 w-12 h-12" />
+    <form
+      [formGroup]="signupFormGroup"
+      class="p-6 flex flex-col gap-2 items-start justify-center flex-8"
+    >
+      <h1 class="text-center text-2xl font-semibold mb-8 w-full">{{ formTitle }}</h1>
 
-      <label for="login">Login</label>
-      <input
-        id="login"
-        formControlName="login"
-        type="text"
-        class="bg-white p-2 rounded-lg border border-slate-400"
-      />
+      <div class="w-full flex flex-col gap-2 flex-1 justify-center">
+        <label for="login">Login</label>
+        <input
+          id="login"
+          formControlName="login"
+          type="text"
+          class="bg-white p-2 rounded-lg border border-slate-400 w-full"
+        />
 
-      <label for="password">Mot de passe</label>
-      <input
-        id="password"
-        formControlName="pass"
-        type="password"
-        class="bg-white p-2 rounded-lg border border-slate-400"
-      />
+        <label for="password">Mot de passe</label>
+        <input
+          id="password"
+          formControlName="pass"
+          type="password"
+          class="bg-white p-2 rounded-lg border border-slate-400 w-full"
+        />
 
-      <label for="confirmPassword">Confirmer le mot de passe</label>
-      <input
-        id="confirmPassword"
-        formControlName="confirmPassword"
-        type="password"
-        class="bg-white p-2 rounded-lg border border-slate-400"
-      />
+        <label for="confirmPassword">Confirmer le mot de passe</label>
+        <input
+          id="confirmPassword"
+          formControlName="confirmPassword"
+          type="password"
+          class="bg-white p-2 rounded-lg border border-slate-400 w-full"
+        />
 
-      <label for="name">Nom</label>
-      <input
-        id="name"
-        formControlName="nom"
-        type="text"
-        class="bg-white p-2 rounded-lg border border-slate-400"
-      />
+        <label for="name">Nom</label>
+        <input
+          id="name"
+          formControlName="nom"
+          type="text"
+          class="bg-white p-2 rounded-lg border border-slate-400 w-full"
+        />
 
-      <label for="firstname">Prénom</label>
-      <input
-        id="firstname"
-        formControlName="prenom"
-        type="text"
-        class="bg-white p-2 rounded-lg border border-slate-400"
-      />
+        <label for="firstname">Prénom</label>
+        <input
+          id="firstname"
+          formControlName="prenom"
+          type="text"
+          class="bg-white p-2 rounded-lg border border-slate-400 w-full"
+        />
+      </div>
 
       <button
         type="button"
-        class="mt-4 bg-green-600 text-white py-2 rounded-lg hover:bg-green-700 transition cursor-pointer"
+        class="mt-4 bg-green-600 text-white py-2 rounded-lg hover:bg-green-700 transition cursor-pointer w-full"
         (click)="onSubmit()"
       >
         Créer un compte
       </button>
       @if (isLoading$ | async) {
-        <app-loader size="l" />
+        <div class="w-full flex items-center justify-center">
+          <app-loader size="l" />
+        </div>
       }
       @if (message$ | async; as message) {
         <p class="text-center text-red-500">{{ message }}</p>
       }
     </form>
-    <a class="text-blue-600 hover:underline mt-4 block text-center" routerLink="/user/signin">
+    <a
+      class="text-blue-600 hover:underline text-center flex-2 flex items-center justify-center w-full"
+      routerLink="/user/signin"
+    >
       Déjà un compte ? Connectez-vous ici.
     </a>
   </div>

@@ -11,12 +11,12 @@ import {
   NotebookPen,
   TriangleAlert,
   LogOut,
+  Menu,
 } from 'lucide-angular';
-import { UnsetToken } from '../../actions/token-actions';
 import { TokenState } from '../../state/token-state';
 import { UserState } from '../../state/user-state';
-import { UnsetUser } from '../../actions/user-actions';
 import { UserService } from '../../services/user.service';
+import { BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'app-header',
@@ -33,16 +33,17 @@ export class HeaderComponent {
   readonly NotebookPen = NotebookPen;
   readonly TriangleAlert = TriangleAlert;
   readonly LogOut = LogOut;
+  readonly Menu = Menu;
 
   private readonly store = inject(Store);
   private readonly userService = inject(UserService);
   readonly token$ = this.store.select(TokenState.token);
   readonly user$ = this.store.select(UserState.user);
 
-  dropdownOpened: boolean = false;
+  showHeader$ = new BehaviorSubject<boolean>(false);
 
   toggleDropdown() {
-    this.dropdownOpened = !this.dropdownOpened;
+    this.showHeader$.next(!this.showHeader$.value);
   }
 
   logout() {

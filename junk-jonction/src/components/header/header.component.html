@@ -1,5 +1,77 @@
-<header
-  class="p-4 flex flex-col h-full items-center justify-between gap-4 bg-gradient-to-t from-green-600 to-green-500 text-white shadow-md border-r-2 border-green-700"
+<lucide-icon
+  [img]="Menu"
+  class="w-8 h-8 absolute top-3 left-3 md:hidden cursor-pointer z-50"
+  (click)="toggleDropdown()"
+></lucide-icon>
+
+@if (showHeader$ | async) {
+  <div
+    class="p-4 flex-col h-full items-center justify-between gap-4 bg-gradient-to-t from-green-600 to-green-500 text-white shadow-md border-r-2 border-green-700 flex md:hidden fixed top-0 left-0 w-52 z-40"
+    role="banner"
+  >
+    <a
+      class="hover:scale-110 transition-all duration-300 flex items-center justify-center gap-2"
+      routerLink="/"
+      (click)="toggleDropdown()"
+      aria-label="Retour à l'accueil"
+    >
+      <img src="logo.svg" class="w-12 h-12" />
+      <span class="hidden sm:inline">Junk Jonction</span>
+    </a>
+
+    <div class="flex flex-col gap-4">
+      <a
+        routerLink="/pollution"
+        (click)="toggleDropdown()"
+        class="flex gap-2 hover:scale-110 transition-all duration-300"
+      >
+        <lucide-angular [img]="NotebookPen"></lucide-angular>
+        <p class="text-center flex-1">Déclarer une pollution</p>
+      </a>
+
+      <a
+        routerLink="/pollution/list"
+        (click)="toggleDropdown()"
+        class="flex gap-2 hover:scale-110 transition-all duration-300"
+      >
+        <lucide-angular [img]="List"></lucide-angular>
+        <p class="text-center flex-1">Voir les pollutions</p>
+      </a>
+
+      <a
+        routerLink="/pollution/favorites"
+        (click)="toggleDropdown()"
+        class="flex gap-2 hover:scale-110 transition-all duration-300"
+      >
+        <lucide-angular [img]="TriangleAlert"></lucide-angular>
+        <p class="text-center flex-1">Pollutions suivies</p>
+      </a>
+    </div>
+
+    @if (user$ | async; as user) {
+      <button
+        (click)="logout()"
+        class="inline-flex items-center p-2 rounded-full hover:scale-110 transition-all duration-300 hover:bg-white/15 cursor-pointer"
+      >
+        <p>{{ user.nom }} {{ user.prenom }}</p>
+        <lucide-angular class="ml-2" [img]="LogOut"></lucide-angular>
+      </button>
+    } @else {
+      <a
+        class="inline-flex items-center p-2 rounded-full hover:scale-110 transition-all duration-300 hover:bg-white/15 cursor-pointer"
+        routerLink="user/signin"
+        (click)="toggleDropdown()"
+      >
+        <p>Connexion</p>
+        <lucide-angular class="ml-2" [img]="User"></lucide-angular>
+      </a>
+    }
+  </div>
+}
+
+<!-- Menu desktop (toujours visible) -->
+<div
+  class="p-4 flex-col h-full items-center justify-between gap-4 bg-gradient-to-t from-green-600 to-green-500 text-white shadow-md border-r-2 border-green-700 hidden md:flex"
   role="banner"
 >
   <a
@@ -12,27 +84,18 @@
   </a>
 
   <div class="flex flex-col gap-4">
-    <a
-      routerLink="/pollution"
-      (click)="toggleDropdown()"
-      class="flex gap-2 hover:scale-110 transition-all duration-300"
-    >
+    <a routerLink="/pollution" class="flex gap-2 hover:scale-110 transition-all duration-300">
       <lucide-angular [img]="NotebookPen"></lucide-angular>
       <p class="text-center flex-1">Déclarer une pollution</p>
     </a>
 
-    <a
-      routerLink="/pollution/list"
-      (click)="toggleDropdown()"
-      class="flex gap-2 hover:scale-110 transition-all duration-300"
-    >
+    <a routerLink="/pollution/list" class="flex gap-2 hover:scale-110 transition-all duration-300">
       <lucide-angular [img]="List"></lucide-angular>
       <p class="text-center flex-1">Voir les pollutions</p>
     </a>
 
     <a
       routerLink="/pollution/favorites"
-      (click)="toggleDropdown()"
       class="flex gap-2 hover:scale-110 transition-all duration-300"
     >
       <lucide-angular [img]="TriangleAlert"></lucide-angular>
@@ -57,4 +120,4 @@
       <lucide-angular class="ml-2" [img]="User"></lucide-angular>
     </a>
   }
-</header>
+</div>
