@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { map, Observable, of } from 'rxjs';
 import { environment } from '../environments/environment';
 import { Pollution } from '../models/types/Pollution';
 import { HttpClient } from '@angular/common/http';
@@ -32,6 +32,10 @@ export class PollutionService {
       `${this.apiURL}/pollutions/${updatedPollution.id}`,
       updatedPollution,
     );
+  }
+
+  getPollutionsCount(): Observable<number> {
+    return this.http.get<number>(`${this.apiURL}/pollutions/count`);
   }
 
   deletePollution(id: number): Observable<boolean> {

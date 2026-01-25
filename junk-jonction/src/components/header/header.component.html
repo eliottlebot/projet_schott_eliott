@@ -45,7 +45,7 @@
       (click)="logout()"
       class="inline-flex items-center p-2 rounded-full hover:scale-110 transition-all duration-300 hover:bg-white/15 cursor-pointer"
     >
-      <p>{{ user.login }}</p>
+      <p>{{ user.nom }} {{ user.prenom }}</p>
       <lucide-angular class="ml-2" [img]="LogOut"></lucide-angular>
     </button>
   } @else {

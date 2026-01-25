@@ -192,3 +192,11 @@ export const deletePollution = asyncHandler(
     });
   },
 );
+
+export const getPollutionsCount = asyncHandler(
+  async (req: Request, res: Response) => {
+    const count = await prisma.pollution.count();
+
+    res.status(200).json(count);
+  },
+);

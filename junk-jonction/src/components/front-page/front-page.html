@@ -37,4 +37,12 @@
       </span>
     </a>
   </div>
+  <div class="flex items-center justify-center gap-4">
+    <img src="heart-logo.svg" class="w-36 h-36" />
+    @if (pollutionCount$ | async; as count) {
+      <div class="mt-4 text-center text-white font-medium">
+        <span class="font-bold">{{ count }}</span> pollutions déclarées jusqu'à présent !
+      </div>
+    }
+  </div>
 </div>

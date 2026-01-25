@@ -29,7 +29,7 @@
         Se connecter
       </button>
       @if (isLoading$ | async) {
-        <app-loader />
+        <app-loader size="m" />
       }
       @if (message$ | async; as message) {
         <p class="text-center text-red-500">{{ message }}</p>

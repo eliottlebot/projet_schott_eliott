@@ -86,7 +86,7 @@ export class PollutionFormComponent implements OnInit {
 
     const pollution: Pollution = {
       ...this.formGroup.value,
-      createdBy: this.userService.getCurrentUserFromLocalStorage().id,
+      createdBy: this.userService.getCurrentUserFromLocalStorage()?.id,
     };
 
     try {

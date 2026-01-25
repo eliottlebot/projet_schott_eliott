@@ -76,12 +76,12 @@ export class UserService {
     );
   }
 
-  getCurrentUserFromLocalStorage(): AuthenticatedUser {
+  getCurrentUserFromLocalStorage(): AuthenticatedUser | null {
     const userJson = localStorage.getItem(USER_KEY);
     if (userJson) {
       return JSON.parse(userJson) as AuthenticatedUser;
     }
-    throw new Error('No current user found in local storage');
+    return null;
   }
 
   getCurrentUser(): Observable<AuthenticatedUser | null> {

@@ -5,6 +5,7 @@ import {
   getPollutionById,
   updatePollution,
   deletePollution,
+  getPollutionsCount,
 } from "../controllers/pollution.controller.js";
 import { requireAuth } from "../auth/requireAuth.js";
 
@@ -15,6 +16,9 @@ router.post("/", requireAuth, createPollution);
 
 // READ - GET /api/pollutions
 router.get("/", requireAuth, getAllPollutions);
+
+// READ - GET /api/pollutions/count
+router.get("/count", getPollutionsCount);
 
 // READ - GET /api/pollutions/:id
 router.get("/:id", requireAuth, getPollutionById);

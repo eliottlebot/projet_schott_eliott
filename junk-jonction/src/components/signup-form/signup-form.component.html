@@ -52,7 +52,7 @@
         Créer un compte
       </button>
       @if (isLoading$ | async) {
-        <app-loader />
+        <app-loader size="l" />
       }
       @if (message$ | async; as message) {
         <p class="text-center text-red-500">{{ message }}</p>

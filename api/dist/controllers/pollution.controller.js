@@ -3,7 +3,7 @@ import { ApiError } from "../middleware/errorHandler.js";
 import { prisma } from "../lib/prisma.js";
 // CREATE - Créer une nouvelle pollution
 export const createPollution = asyncHandler(async (req, res) => {
-    const { titre, lieu, dateObservation, typePollution, description, latitude, longitude, photoUrl, createdBy, } = req.body;
+    const { titre, lieu, dateObservation, typePollution, description, latitude, longitude, photo, createdBy, } = req.body;
     if (!titre) {
         throw new ApiError(400, "Le titre est requis");
     }
@@ -16,7 +16,7 @@ export const createPollution = asyncHandler(async (req, res) => {
             description,
             latitude: latitude ? parseFloat(latitude) : null,
             longitude: longitude ? parseFloat(longitude) : null,
-            photoUrl,
+            photo,
             createdBy,
         },
     });
@@ -27,10 +27,44 @@ export const createPollution = asyncHandler(async (req, res) => {
 });
 // READ - Récupérer toutes les pollutions
 export const getAllPollutions = asyncHandler(async (req, res) => {
+    const query = req.query.query;
     const pollutions = await prisma.pollution.findMany({
+        where: query
+            ? {
+                OR: [
+                    {
+                        titre: {
+                            contains: query,
+                            mode: "insensitive",
+                        },
+                    },
+                    {
+                        description: {
+                            contains: query,
+                            mode: "insensitive",
+                        },
+                    },
+                    {
+                        lieu: {
+                            contains: query,
+                            mode: "insensitive",
+                        },
+                    },
+                    {
+                        typePollution: {
+                            contains: query,
+                            mode: "insensitive",
+                        },
+                    },
+                ],
+            }
+            : undefined,
         include: {
             user: {
-                select: { nom: true, prenom: true },
+                select: {
+                    nom: true,
+                    prenom: true,
+                },
             },
         },
         orderBy: {
@@ -55,7 +89,7 @@ export const getPollutionById = asyncHandler(async (req, res) => {
 // UPDATE - Mettre à jour une pollution
 export const updatePollution = asyncHandler(async (req, res) => {
     const { id } = req.params;
-    const { titre, lieu, dateObservation, typePollution, description, latitude, longitude, photoUrl, } = req.body;
+    const { titre, lieu, dateObservation, typePollution, description, latitude, longitude, photo, } = req.body;
     const existingPollution = await prisma.pollution.findUnique({
         where: {
             id: parseInt(id),
@@ -78,7 +112,7 @@ export const updatePollution = asyncHandler(async (req, res) => {
             description,
             latitude: latitude ? parseFloat(latitude) : undefined,
             longitude: longitude ? parseFloat(longitude) : undefined,
-            photoUrl,
+            photo,
         },
     });
     res.status(200).json({
@@ -106,4 +140,8 @@ export const deletePollution = asyncHandler(async (req, res) => {
         success: true,
         message: "Pollution supprimée avec succès",
     });
+});
+export const getPollutionsCount = asyncHandler(async (req, res) => {
+    const count = await prisma.pollution.count();
+    res.status(200).json(count);
 });

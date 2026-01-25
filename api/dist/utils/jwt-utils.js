@@ -7,7 +7,6 @@ export const generateJwt = (userId) => {
     });
 };
 export const verifyJwt = (token) => {
-    console.log("Vérification du token JWT :", token);
     return jwt.verify(token, process.env.JWT_SECRET || "secretKey");
 };
 export const normalizeToken = (token) => {

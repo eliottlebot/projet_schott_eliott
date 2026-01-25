@@ -1,9 +1,30 @@
 import { prisma } from "../lib/prisma.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { ApiError } from "../middleware/errorHandler.js";
-import { generateJwt, normalizeToken, verifyJwt } from "../utils/jwt-utils.js";
+import { generateJwt, verifyJwt } from "../utils/jwt-utils.js";
+const USER_COOKIE_TOKEN_NAME = "auth_token";
+const TOKEN_LIFE_DURATION_MS = 1000 * 60 * 60 * 24;
+export const logout = asyncHandler(async (req, res) => {
+    const token = req.cookies[USER_COOKIE_TOKEN_NAME];
+    if (!token) {
+        return res.status(200).json({
+            success: true,
+            message: "Déconnecté avec succès",
+        });
+    }
+    res.clearCookie(USER_COOKIE_TOKEN_NAME, {
+        httpOnly: true,
+        sameSite: "lax",
+        secure: false,
+        path: "/",
+    });
+    res.status(200).json({
+        success: true,
+        message: "Déconnecté avec succès",
+    });
+});
 export const getMe = asyncHandler(async (req, res) => {
-    const token = normalizeToken(req.cookies.ai_user);
+    const token = req.cookies[USER_COOKIE_TOKEN_NAME];
     if (!token)
         throw new ApiError(401, "Non authentifié");
     try {
@@ -14,7 +35,7 @@ export const getMe = asyncHandler(async (req, res) => {
         });
         if (!user)
             throw new ApiError(404, "Utilisateur introuvable");
-        res.status(200).json({ success: true, data: { user } });
+        res.status(200).json({ success: true, data: { user, token } });
     }
     catch {
         throw new ApiError(401, "Token invalide ou expiré");
@@ -43,12 +64,12 @@ export const createUser = asyncHandler(async (req, res) => {
     });
     const { pass: _, ...userWithoutPassword } = user;
     const token = generateJwt(user.id);
-    // Ajouter le nouveau cookie avec le payload correct
-    res.cookie("token", token, {
+    res.cookie(USER_COOKIE_TOKEN_NAME, token, {
         httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
+        maxAge: TOKEN_LIFE_DURATION_MS,
         sameSite: "lax",
-        maxAge: 1000 * 60 * 60 * 24, // 1 jour
+        secure: false,
+        path: "/",
     });
     res.status(201).json({
         success: true,
@@ -75,12 +96,12 @@ export const getUser = asyncHandler(async (req, res) => {
     }
     const { pass: _, ...userWithoutPassword } = user;
     const token = generateJwt(user.id);
-    // Ajouter le nouveau cookie avec le payload correct
-    res.cookie("token", token, {
+    res.cookie(USER_COOKIE_TOKEN_NAME, token, {
         httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
+        maxAge: TOKEN_LIFE_DURATION_MS,
         sameSite: "lax",
-        maxAge: 1000 * 60 * 60 * 24, // 1 jour
+        secure: false,
+        path: "/",
     });
     res.status(200).json({
         success: true,
@@ -90,21 +111,18 @@ export const getUser = asyncHandler(async (req, res) => {
         },
     });
 });
-// READ - Récupérer tous les utilisateurs
 export const getAllUsers = asyncHandler(async (req, res) => {
     const users = await prisma.user.findMany({
         orderBy: {
             createdAt: "desc",
         },
     });
-    // Retirer les mots de passe
     const usersWithoutPasswords = users.map(({ pass, ...user }) => user);
     res.status(200).json(usersWithoutPasswords);
 });
 // READ - Récupérer un utilisateur par ID
 export const getUserById = asyncHandler(async (req, res) => {
     const { id } = req.params;
-    console.log("ID utilisateur demandé :", id);
     const user = await prisma.user.findUnique({
         where: {
             id,

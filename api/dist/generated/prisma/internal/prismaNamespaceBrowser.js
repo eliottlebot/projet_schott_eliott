@@ -69,7 +69,7 @@ export const PollutionScalarFieldEnum = {
     description: 'description',
     latitude: 'latitude',
     longitude: 'longitude',
-    photoUrl: 'photoUrl',
+    photo: 'photo',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
     createdBy: 'createdBy'
