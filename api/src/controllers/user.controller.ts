@@ -83,8 +83,8 @@ export const createUser = asyncHandler(async (req: Request, res: Response) => {
   res.cookie(USER_COOKIE_TOKEN_NAME, token, {
     httpOnly: true,
     maxAge: TOKEN_LIFE_DURATION_MS,
-    sameSite: "lax",
-    secure: false,
+    sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+    secure: process.env.NODE_ENV === "production",
     path: "/",
   });
 
@@ -124,8 +124,8 @@ export const getUser = asyncHandler(async (req: Request, res: Response) => {
   res.cookie(USER_COOKIE_TOKEN_NAME, token, {
     httpOnly: true,
     maxAge: TOKEN_LIFE_DURATION_MS,
-    sameSite: "lax",
-    secure: false,
+    sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+    secure: process.env.NODE_ENV === "production",
     path: "/",
   });
 
